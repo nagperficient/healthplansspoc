@@ -1,0 +1,29 @@
+.coverage-tabs {
+  border-bottom: none;           /* remove default reactstrap border */
+}
+
+.coverage-tabs .nav-item {
+  margin-right: 1.5rem;
+}
+
+.coverage-tabs .nav-link {
+  padding: 0.5rem 0;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #333;
+  font-weight: 500;
+}
+
+.coverage-tabs .nav-link:hover {
+  color: #0052cc;
+}
+
+.coverage-tabs .nav-link.active {
+  color: #0052cc;
+  border-bottom-color: #0052cc;
+}
+
+.coverage-tabs-container {
+  /* optional: constrain width or add padding */
+  padding: 0 1rem;
+}

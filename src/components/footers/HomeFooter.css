@@ -1,0 +1,53 @@
+.footer {
+  background-color: #1a006c; /* deep purple */
+  color: #fff;
+  padding: 2.5rem 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.footer a {
+  color: #fff;
+  text-decoration: underline;
+}
+
+.copyright {
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+
+.footer-links {
+  margin-bottom: 1.5rem;
+}
+
+.footer-links ul li + li {
+  margin-top: 0.5rem;
+}
+
+/* Divider */
+.footer-divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  margin: 1.5rem 0;
+}
+
+/* Disclaimer text */
+.disclaimer p {
+  margin-bottom: 1rem;
+}
+
+.external-note {
+  display: flex;
+  align-items: flex-start;
+  font-size: 0.85rem;
+}
+
+.external-note a {
+  margin-left: 0.25rem;
+}
+
+/* Small tweak for the arrow */
+.external-note span[aria-hidden="true"] {
+  font-size: 1.1rem;
+  line-height: 1;
+}

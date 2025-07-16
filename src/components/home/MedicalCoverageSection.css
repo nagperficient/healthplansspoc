@@ -1,0 +1,72 @@
+.medical-section {
+  background-color: #f7f7f7;
+}
+
+.medical-content {
+  padding: 2rem;
+}
+
+.medical-title {
+  color: #1a0361;  /* deep navy */
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.medical-intro {
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.medical-list {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.medical-list li {
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.medical-link {
+  color: #0052cc;  /* link blue */
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+/* -------- image + leaves -------- */
+
+.medical-image {
+  overflow: hidden;
+}
+
+
+/* green “leaf” shapes */
+.leaf {
+  position: absolute;
+  /* background-color: #008a35; */
+  z-index: 2;
+}
+
+/* larger leaf */
+.leaf-large {
+  width: 160px;
+  height: 200px;
+  top: 5%;
+  right: 5%;
+  border-radius: 50% 50% 20% 20%;
+  transform: rotate(-20deg);
+}
+
+/* smaller leaf */
+.leaf-small {
+  width: 80px;
+  height: 120px;
+  top: 15%;
+  right: 25%;
+  border-radius: 50% 50% 20% 20%;
+  transform: rotate(25deg);
+}

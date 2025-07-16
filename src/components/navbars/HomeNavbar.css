@@ -1,0 +1,42 @@
+.main-navbar {
+  background-color: #ffffff;
+  padding: 0.5rem 0;
+  box-shadow: none;
+}
+
+.cigna-logo {
+  height: 40px;
+}
+
+.navbar-nav {
+  flex-wrap: nowrap;
+}
+
+.nav-link {
+  color: #000;
+  font-weight: 500;
+  margin: 0 0.75rem;
+  white-space: nowrap;
+}
+
+.highlight {
+  color: #0052cc; /* link blue */
+}
+
+.nav-divider {
+  width: 1px;
+  height: 24px;
+  background-color: #ccc;
+  margin: 0 0.75rem;
+}
+
+.search-link {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 767.98px) {
+  .nav-divider {
+    display: none;
+  }
+}

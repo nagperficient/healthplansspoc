@@ -1,0 +1,69 @@
+.summary-card {
+  border-radius: 0.75rem;
+  border: 1px solid #e2e2e2;
+}
+
+.card-title {
+  font-size: 2.25rem;
+  font-weight: 600;
+  color: #1a006c; /* deep blue */
+}
+
+.star-rating {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.star-rating .fa-star,
+.star-rating .fa-star-half-alt {
+  color: #f5a623; /* gold */
+  margin-right: 0.15rem;
+}
+
+.star-rating .fa-star {
+  color: #ddd; /* unfilled */
+}
+
+.star-rating .filled {
+  color: #f5a623;
+}
+
+.rating-label {
+  font-size: 0.875rem;
+  color: #333;
+}
+
+.info-icon {
+  color: #6c757d;
+  margin-left: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.metrics-row .metric {
+  padding: 0.5rem 0;
+}
+
+.metric-label {
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.metric-subtext {
+  display: block;
+  font-size: 0.75rem;
+  color: #6c757d;
+}
+
+.metric-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 0.25rem;
+  color: #000;
+}
+
+.btn-primary {
+  border-radius: 9999px;
+  padding: 0.5rem 1.25rem;
+  font-weight: 500;
+}

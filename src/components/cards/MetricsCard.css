@@ -1,0 +1,68 @@
+.metrics-card {
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.card-title {
+  font-size: 1rem;
+}
+
+.metric-label {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.metric-value {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.metric-trend {
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+}
+
+.bw-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.cost {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Progress bar segments */
+.bandwidth-progress {
+  height: 0.5rem;
+  overflow: hidden;
+  border-radius: 0.25rem;
+}
+
+.progress-purple {
+  background-color: #7f5af0;
+}
+
+.progress-grey {
+  background-color: #adb5bd;
+}
+
+.progress-light {
+  background-color: #e9ecef;
+}
+
+/* Legend markers */
+.legend-marker {
+  display: inline-block;
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 0.25rem;
+}
+
+.legend-marker.cached {
+  background-color: #7f5af0;
+}
+
+.legend-marker.noncached {
+  background-color: #adb5bd;
+}

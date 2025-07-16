@@ -1,0 +1,43 @@
+.welcome-banner {
+  /* your background image (leaves + portrait) */
+  background: url('../../assets/cigna-com-hero-xxl@2x.jpg') center/cover no-repeat;
+  /* optional dark overlay for better text contrast */
+  position: relative;
+  min-height: 60vh;
+  color: #fff;
+}
+
+/* .welcome-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+} */
+
+.welcome-banner .container {
+  position: relative; /* so text sits above the overlay */
+  z-index: 1;
+  height: 100%;
+}
+
+.welcome-text {
+  padding: 2rem;
+}
+
+.greeting {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: 1.125rem;
+  max-width: 500px;
+  line-height: 1.5;
+}

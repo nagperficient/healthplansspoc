@@ -1,0 +1,52 @@
+.inclusion-section {
+  position: relative;
+  background-color: #008a35; /* green brand color */
+  overflow: hidden;
+}
+
+.inclusion-content {
+  color: #fff;
+  padding: 4rem 2rem;
+}
+
+.inclusion-content .title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.inclusion-content .lead {
+  font-size: 1rem;
+  max-width: 500px;
+  margin-bottom: 1.5rem;
+}
+
+.inclusion-content .learn-more {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.inclusion-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* creates that curved “cut‑out” between panels */
+  clip-path: ellipse(75% 100% at 0% 50%);
+}
+
+.feedback-btn {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translate(50%, -50%) rotate(-90deg);
+  transform-origin: center;
+  background-color: #0056b3; /* bootstrap primary */
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
