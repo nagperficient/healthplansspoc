@@ -28,7 +28,7 @@ const healthPlanData = [
 const CustomerModal = ({ isOpen, toggle, planId }) => {
   const plan = healthPlanData.find(p => p.plan_id === planId);
 
-  if (!plan) return null;
+  // if (!plan) return null;
 
   return (
     <Modal isOpen={isOpen} toggle={toggle}>
@@ -38,6 +38,7 @@ const CustomerModal = ({ isOpen, toggle, planId }) => {
         <p><strong>Customer ID:</strong> {plan.customer_id}</p>
         <p><strong>Enrollment Date:</strong> {plan.enrollment_date}</p>
         <p><strong>Status:</strong> {plan.status}</p>
+        sfdsf
       </ModalBody>
       <ModalFooter>
         <Button color="secondary" onClick={toggle}>Close</Button>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardBody,
@@ -13,6 +13,8 @@ import {
   ModalBody,
   ModalFooter
 } from 'reactstrap';
+import CustomerModal from '../../components/modalPopups/CustomerModal';
+import HealthPlansModal from '../../components/modalPopups/HealthPlansModal';
 
 //healthplans
 
@@ -178,21 +180,30 @@ const customerdata = [
 ];
 
 function CustomersHealthPlan() {
-  const [modal, setModal] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [modal, setModal] = useState(true);
+  const [selectedCustomer, setSelectedCustomer] = useState<null|any>(null);
 
   const toggleModal = () => setModal(!modal);
 
-  const handleViewPlan = (id) => {
-    const customer = healthplansdata.find(c => c._id === id);
-    setSelectedCustomer(customer);
+  const handleViewPlan = (id:number) => {
+    const selectedHealthPlan = healthplansdata.find(c => c._id === id);
+    setSelectedCustomer(selectedHealthPlan);
     setModal(true);
   };
 
+  const handleUpdatePlan = () => {
+    setModal(true);
+  }
+
+  useEffect(() => {
+    handleUpdatePlan()
+  }, [selectedCustomer])
+
+
   return (
     <div className="container mt-4">
-        <h1>Health Plans</h1>
-        <br/>
+      <h1>Health Plans</h1>
+      <br />
       <Row>
         {customerdata.map((plan) => (
           <Col sm="12" md="6" lg="4" className="mb-4" key={plan?._id}>
@@ -208,6 +219,9 @@ function CustomersHealthPlan() {
                 <Button color="primary" onClick={() => handleViewPlan(plan.plan_id)}>
                   View Plan
                 </Button>
+                <Button color="info" onClick={() => setSelectedCustomer(plan.plan_id)}>
+                  Edit
+                </Button>
               </CardBody>
             </Card>
           </Col>
@@ -215,7 +229,8 @@ function CustomersHealthPlan() {
       </Row>
 
       {/* Modalpopup place here */}
-
+      {/* <CustomerModal isOpen={modal} toggle={() => setModal(!modal)} planId={selectedCustomer} /> */}
+      <HealthPlansModal isOpen={true} toggle={()=>alert("im toggle")} />
     </div>
   );
 }
