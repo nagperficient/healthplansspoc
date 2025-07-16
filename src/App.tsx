@@ -3,6 +3,9 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Homepage from './pages/Homepage';
 
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Customers from "./pages/customers/Customers";
+import CustomersHealthPlan from "./pages/customers/CustomersHealthPlan";
 
 function App() {
   
