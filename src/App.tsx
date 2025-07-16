@@ -1,28 +1,22 @@
-import React from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Homepage from './pages/Homepage';
-
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Customers from "./pages/customers/Customers";
 import CustomersHealthPlan from "./pages/customers/CustomersHealthPlan";
 
 function App() {
-  
 
   return (
     <>
-          <div className="App">
-      <BrowserRouter>
-        <Routes>
-          
-          {/* <Route path="/customers" element={<Customers />} />
-          <Route path="/customershealthplan" element={<CustomersHealthPlan />} /> */}
-          <Route path="/" element={<Homepage />} />
-
-        </Routes>
-      </BrowserRouter>
-    </div>
+      <div className="App">
+        <BrowserRouter>
+          <Routes>
+    z      <Route path="/customers" element={<Customers />} />
+            <Route path="/customershealthplan" element={<CustomersHealthPlan />} />
+            <Route path="/" element={<Homepage />} />
+          </Routes>
+        </BrowserRouter>
+      </div>
     </>
   );
 }

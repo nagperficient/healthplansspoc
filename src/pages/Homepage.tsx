@@ -1,4 +1,3 @@
-import React from 'react'
 import HomeNavbar from '../components/navbars/HomeNavbar'
 import { Container } from 'reactstrap'
 import WelcomeBanner from '../components/home/WelcomeBanner'
