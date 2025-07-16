@@ -27,7 +27,7 @@ const MetricsCard = () => (
       </Row>
 
       {/* Top metrics */}
-      <Row className="text-center mb-4">
+      <Row className="text-center my-4">
         <Col xs="6">
           <div className="metric-label">Cache Hit Rate</div>
           <div className="metric-value text-primary">12.3%</div>

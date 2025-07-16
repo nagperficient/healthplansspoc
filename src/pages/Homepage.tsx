@@ -6,14 +6,6 @@ import MedicalCoverageSection from '../components/home/MedicalCoverageSection'
 import { imgBuyingLogo } from '../utils/Images'
 import InclustionSection from '../components/home/InclustionSection'
 import HomeFooter from '../components/footers/HomeFooter'
-import LoginScreen from './auth/LoginScreen'
-import MetricsCard from '../components/cards/MetricsCard'
-import PlanCard from '../components/cards/PlanCard'
-import SummaryPlanCard from '../components/cards/SummaryPlanCard'
-import EventsNotification from '../components/notification/EventsNotification'
-import CoverageTabs from '../components/tabs/CoverageTabs'
-import PlanDetailsTable from '../components/tables/PlanDetailsTable'
-
 function Homepage() {
   return (
     <Container fluid expand="lg">
@@ -21,8 +13,8 @@ function Homepage() {
         <WelcomeBanner />
         <MedicalCoverageSection imageSrc={imgBuyingLogo} />
         <InclustionSection />
-        <HomeFooter />
-        <LoginScreen />
+         <HomeFooter />
+       {/* <LoginScreen />
         <div className="d-flex gap-3">
         <MetricsCard />
         <MetricsCard />
@@ -39,7 +31,7 @@ function Homepage() {
         </div>
         <EventsNotification />
         <CoverageTabs />
-        <PlanDetailsTable />
+        <PlanDetailsTable /> */}
       </Container>
   )
 }

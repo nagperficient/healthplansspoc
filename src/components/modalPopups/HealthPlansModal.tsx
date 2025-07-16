@@ -1,25 +1,28 @@
-import React from 'react'
+import { use } from 'react';
+import { StoreContext } from '../../hooks/contexts/GlobalContext';
 import HealthPlansForm from '../forms/HealthPlansForm'
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap'
 
 type Props = {
     isOpen: boolean,
     toggle: () => void,
+    planId:string
 
 }
 
 const HealthPlansModal = (props: Props) => {
-    const { isOpen, toggle } = props;
+    const { isOpen, toggle, planId } = props;
+    const { healthplansData } = use(StoreContext) as any;
+    const selectedPlan = healthplansData?.find(val => val._id === planId)
+    console.log(Object.keys(selectedPlan))
     return (
         <div>
             <Modal isOpen={isOpen} toggle={toggle} size='lg' className='shadow-lg'>
-                <ModalHeader toggle={toggle}>Plan Details</ModalHeader>
+                <ModalHeader toggle={toggle} className="text-primary bg-light">Edit Plan</ModalHeader>
                 <ModalBody>
-                    <HealthPlansForm />
+                    <HealthPlansForm toggle={toggle} {...selectedPlan} />
                 </ModalBody>
-                <ModalFooter>
-                    <Button color="secondary" onClick={toggle}>Close</Button>
-                </ModalFooter>
+               
             </Modal>
 
         </div>

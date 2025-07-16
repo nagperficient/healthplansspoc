@@ -1,0 +1,8 @@
+
+.notification-dropdown-menu {
+    left: -181px !important;
+    top: 46px !important;
+    min-width: 250px;
+    max-width: 300px;
+    overflow-wrap: break-word;
+}

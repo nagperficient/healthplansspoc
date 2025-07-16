@@ -1,28 +1,44 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// adjust the URL if your backend is elsewhere
-const socket = io('http://localhost:4000');
+// Connect to your backend WebSocket server
+const socket = io('http://localhost:4000'); // Replace with your actual backend URL
 
 export default function EventsNotification() {
+  const [messages, setMessages] = useState<any[]>([]);
+
   useEffect(() => {
-    // Listen for events from the server
     socket.on('kafka-notification', (data) => {
-      // Customize your toast — here we assume data has a `message` field
+      // Show toast
       toast.info(data.message || JSON.stringify(data), {
         position: 'top-right',
         autoClose: 5000,
         pauseOnHover: true,
       });
+
+      // Update live messages
+      setMessages((prev) => [data, ...prev]);
     });
 
-    // Clean up on unmount
     return () => {
       socket.off('kafka-notification');
     };
   }, []);
 
-  return <ToastContainer />;
+  return (
+    <div style={{ padding: '1rem' }}>
+      <h4>Live Notifications</h4>
+      <ul>
+        {messages.map((msg, index) => (
+          <li key={index}>
+            <strong>{msg.title || 'Notification'}:</strong> {msg.message || JSON.stringify(msg)}
+          </li>
+        ))}
+      </ul>
+
+      <ToastContainer />
+    </div>
+  );
 }

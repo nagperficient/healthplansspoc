@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import {
   Card,
   CardBody,
@@ -15,10 +15,15 @@ import {
 } from 'reactstrap';
 import CustomerModal from '../../components/modalPopups/CustomerModal';
 import HealthPlansModal from '../../components/modalPopups/HealthPlansModal';
+import SummaryPlanCard from '../../components/cards/SummaryPlanCard';
+import PlanCard from '../../components/cards/PlanCard';
+import { toast } from 'react-toastify';
+import { StoreContext } from '../../hooks/contexts/GlobalContext';
+import useAuth from '../../hooks/useAuth';
 
 //healthplans
 
-const healthplansdata = [
+const healthplansdatas = [
   {
     "_id": 151,
     "plan_name": "Cigna PPO Essential",
@@ -181,56 +186,95 @@ const customerdata = [
 
 function CustomersHealthPlan() {
   const [modal, setModal] = useState(true);
-  const [selectedCustomer, setSelectedCustomer] = useState<null|any>(null);
+  const userContent = JSON.parse(localStorage.getItem("userData") || "{}") as any;
+  const { healthplansData, customerhealthplansData } = use(StoreContext)
+  const [healthPlans, setHealthPlans] = useState([]);
+  const { isAuthenticated, isLoading } = useAuth()
+  const [selectedCustomer, setSelectedCustomer] = useState<null | any>(null);
+  const [selectedPlan, setSelectedPlan] = useState<null | any>(null);
 
-  const toggleModal = () => setModal(!modal);
-
-  const handleViewPlan = (id:number) => {
-    const selectedHealthPlan = healthplansdata.find(c => c._id === id);
-    setSelectedCustomer(selectedHealthPlan);
-    setModal(true);
-  };
+  const toggleModal = () => { setModal(!modal); setSelectedPlan("") };
 
   const handleUpdatePlan = () => {
     setModal(true);
   }
 
   useEffect(() => {
-    handleUpdatePlan()
-  }, [selectedCustomer])
+    if (selectedPlan) {
+      handleUpdatePlan()
 
+    }
+  }, [selectedPlan])
+
+  const accessPlanDenied = () => {
+    toast.error("Enrollment is disabled.")
+  }
+
+  const editHealthPlan = (planId: string) => {
+    setSelectedPlan(planId)
+  }
+  useEffect(() => {
+
+    if (isAuthenticated) {
+      if (userContent.role === "user") {
+        const selectedPlans = customerhealthplansData.filter(plan => +plan.customer_id === +userContent._id).map(val => +val.plan_id);
+        const updatedHealthPlans = healthplansData.filter(plan => selectedPlans.includes(+plan._id))
+        setHealthPlans(updatedHealthPlans)
+      }
+    }
+    return () => {
+
+    }
+  }, [isAuthenticated])
+
+  if (isLoading) {
+    return <div>Loading..</div>
+  } else if (!isAuthenticated) {
+    window.location.href = "/login"
+  }
+  if(!isAuthenticated){
+    return <div>Loading...</div>
+  }
 
   return (
     <div className="container mt-4">
-      <h1>Health Plans</h1>
+      <h4 className="my-3">Health Plans</h4>
       <br />
       <Row>
-        {customerdata.map((plan) => (
+        {(userContent.role === "user" ? healthPlans : healthplansData)?.map((plan) => (
           <Col sm="12" md="6" lg="4" className="mb-4" key={plan?._id}>
-            <Card style={{ width: '100%' }}>
-              <img alt="Health Plan" src="https://picsum.photos/300/200" />
-              <CardBody>
-                <CardTitle tag="h5">Plan ID: {plan.plan_id}</CardTitle>
-                <CardSubtitle className="mb-2 text-muted" tag="h6">Customer ID: {plan.customer_id}</CardSubtitle>
-                <CardText>
-                  <strong>Enrollment Date:</strong> {plan.enrollment_date}<br />
-                  <strong>Status:</strong> {plan.status}
-                </CardText>
-                <Button color="primary" onClick={() => handleViewPlan(plan.plan_id)}>
-                  View Plan
-                </Button>
-                <Button color="info" onClick={() => setSelectedCustomer(plan.plan_id)}>
-                  Edit
-                </Button>
-              </CardBody>
-            </Card>
+
+            <PlanCard
+              // plan_name={plan.plan_name}
+              // plan_type={plan.plan_type}
+              // provider={plan.provider}
+              // coverage_area={plan.coverage_area}
+              // monthly_premium={plan.monthly_premium}
+              // deductible={plan.deductible}
+              // coinsurance={plan.coinsurance}
+              // copay_primary={plan.copay_primary}
+              // copay_specialist={plan.copay_specialist}
+              // out_of_pocket_max={plan.out_of_pocket_max}
+              // network_type={plan.network_type}
+              // referral_required={plan.referral_required}
+              // includes_prescription={plan.includes_prescription}
+              // dental_coverage={plan.dental_coverage}
+              // vision_coverage={plan.vision_coverage}
+              // plan_url={plan.plan_url}
+              // plan_notes={plan.plan_notes}
+              // effective_date={plan.effective_date}
+              editPlan={editHealthPlan}
+              entrollPlan={accessPlanDenied}
+              {...plan}
+            />
+
           </Col>
         ))}
       </Row>
 
       {/* Modalpopup place here */}
       {/* <CustomerModal isOpen={modal} toggle={() => setModal(!modal)} planId={selectedCustomer} /> */}
-      <HealthPlansModal isOpen={true} toggle={()=>alert("im toggle")} />
+      {selectedPlan && <HealthPlansModal isOpen={modal} toggle={toggleModal} planId={selectedPlan} />}
     </div>
   );
 }
