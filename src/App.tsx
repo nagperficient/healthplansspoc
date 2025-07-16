@@ -12,7 +12,6 @@ import AuthLayout from "./pages/layouts/AuthLayout";
 import ProfileScreen from "./pages/profile/ProfileScreen";
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <>
