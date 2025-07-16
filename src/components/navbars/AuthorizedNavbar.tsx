@@ -9,14 +9,18 @@ import {
   NavLink,
   Container,
   Button,
+  DropdownItem,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
 } from "reactstrap";
 import "./HomeNavbar.css";
 import { logoWhite } from "../../utils/Images";
-import useAuth from "../../hooks/useAuth";
+import { Bell, User } from "lucide-react";
+import AuthDropDown from "../dropdowns/AuthDropDown";
 
-const HomeNavbar = () => {
+const AuthorizedNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const {isAuthenticated} = useAuth();
   const toggle = () => setIsOpen(!isOpen);
 
   return (
@@ -44,33 +48,15 @@ const HomeNavbar = () => {
                   For <span className="highlight">Customers</span>
                 </NavLink>
               </NavItem>
-              {/* <NavItem>
-                <NavLink href="#">
-                  For <span className="highlight">Brokers</span>
-                </NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="#">
-                  For <span className="highlight">Employers</span>
-                </NavLink>
-              </NavItem> */}
 
               {/* vertical divider */}
               <div className="nav-divider" />
 
+             
               <NavItem>
-                {!isAuthenticated ? <NavLink href="/login" className="search-link btn btn-outline-primary px-4 shadow-lg">
-                  Login
-                </NavLink>:
-                <Button className="search-link px-4 shadow-lg" color="primary" onClick={()=>{
-                        localStorage.clear();
-                        window.location.href="/"
-                    }}>Logout</Button>
-}
+                
+                <AuthDropDown />
               </NavItem>
-              {/* <NavItem>
-                <NavLink href="#">Español</NavLink>
-              </NavItem> */}
             </Nav>
           </Collapse>
         </div>
@@ -79,4 +65,4 @@ const HomeNavbar = () => {
   );
 };
 
-export default HomeNavbar;
+export default AuthorizedNavbar;

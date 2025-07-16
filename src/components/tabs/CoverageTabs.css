@@ -27,3 +27,11 @@
   /* optional: constrain width or add padding */
   padding: 0 1rem;
 }
+.full-height-table-empty{
+  min-height: 100vh;
+  border: 1px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding-top: 5rem;
+}

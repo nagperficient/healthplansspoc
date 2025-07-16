@@ -1,27 +1,17 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import InclustionSection from "./components/home/InclustionSection";
-import MedicalCoverageSection from "./components/home/MedicalCoverageSection";
-import { imgBuyingLogo } from "./utils/Images";
-import HomeNavbar from "./components/navbars/HomeNavbar";
-import WelcomeBanner from "./components/home/WelcomeBanner";
-import HomeFooter from "./components/footers/HomeFooter";
-import { Container } from "reactstrap";
 import LoginScreen from "./pages/auth/LoginScreen";
-import PlanCard from "./components/cards/PlanCard";
-import MetricsCard from "./components/cards/MetricsCard";
-import SummaryPlanCard from "./components/cards/SummaryPlanCard";
-import EventsNotification from "./components/notification/EventsNotification";
-import CoverageTabs from "./components/tabs/CoverageTabs";
-import PlanDetailsTable from "./components/tables/PlanDetailsTable";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Customers from "./pages/customers/Customers";
 import CustomersHealthPlan from "./pages/customers/CustomersHealthPlan";
+import Homepage from "./pages/Homepage";
+import HealthLayout from "./pages/layouts/HealthLayout";
+import { ToastContainer } from 'react-toastify';
+import CustomersHealthPlanSingle from "./pages/customers/CustomersHealthPlanSingle";
+import AuthLayout from "./pages/layouts/AuthLayout";
+import ProfileScreen from "./pages/profile/ProfileScreen";
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -50,14 +40,39 @@ function App() {
         <CoverageTabs />
         <PlanDetailsTable />
       </Container> */}
-    <BrowserRouter>
+      <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<LoginScreen />} />
-          <Route path="/customers" element={<Customers />} />
-          <Route path="/customershealthplan" element={<CustomersHealthPlan />} />
+
+          <Route index element={<Homepage />} />
+
+          <Route path="/" element={<HealthLayout />}>
+
+            <Route path="customers">
+              
+              <Route index element={<Customers />} />
+              <Route path="healthplan">
+                <Route index element={<CustomersHealthPlan />} />
+                <Route path=":id/:name" element={<CustomersHealthPlanSingle />} />
+              </Route>
+            </Route>
+
+          </Route>
+          <Route path="/" element={<HealthLayout />}>
+            <Route path="/profile" element={<ProfileScreen />} />
+          </Route>
+          <Route path="/" element={<AuthLayout />}>
+            <Route path="/login" element={<LoginScreen />} />
+            
+          </Route>
+
+
+          {/* <Route path="/customers" element={<Customers />} /> */}
+          {/*  <Route path="/customers" element={<HealthLayout />}>
+            <Route path="/healthplan" element={<CustomersHealthPlan />} />
+          </Route> */}
         </Routes>
       </BrowserRouter>
-
+      <ToastContainer position="bottom-right" theme="colored" />
     </>
   );
 }

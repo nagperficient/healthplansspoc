@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useEffect, useMemo, useState } from 'react';
 import {
   Card,
   CardBody,
@@ -9,7 +9,10 @@ import {
   Row,
   Col,
 } from 'reactstrap';
-
+import { StoreContext } from '../../hooks/contexts/GlobalContext';
+import "./Customers.css"
+import { user1, user2, user3, user4, user5, user6 } from '../../utils/Images';
+import useAuth from '../../hooks/useAuth';
 const customersdata = [
   {
     "_id": 1,
@@ -54,28 +57,40 @@ const customersdata = [
 ];
 
 function Customers() {
+  const { customersData, customerhealthplansData} = use(StoreContext)
+  const {isAuthenticated, isLoading} = useAuth();
   const [modal, setModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
-
+  
   const toggleModal = () => setModal(!modal);
 
   const handleViewProfile = (customer) => {
     setSelectedCustomer(customer);
     toggleModal();
   };
-
+  
+  const userPlans = (customerId) => useMemo(() => customerhealthplansData.filter(val => +val.customer_id === +customerId)?.map(plan=>plan.plan_id), [customerId])
+  const profileImagesList = [user1, user2, user3, user4, user5, user6]
+  if(isLoading){
+    <div>Loading..</div>
+  } else if(!isAuthenticated) {
+    window.location.href="/login"
+  }
+ 
   return (
     <div className="container mt-4">
+      <h4 className="my-4">Customers{JSON.stringify(isAuthenticated)}</h4>
       <Row>
         {customersdata.map((customer) => (
-          <Col sm="12" md="6" lg="4" className="mb-4" key={customer._id}>
-            <Card style={{ width: '100%' }}>
+          <Col sm="12" md="6" lg="4" className="mb-4" key={customer._id} style={{position:"relative",overflow:"hidden"}}>
+            <Card style={{ width: '100%' }} className="customer-card p-0 ">
               <img
                 alt="Customer"
-                src="https://picsum.photos/300/200"
+                src={profileImagesList[Math.floor(Math.random() * 6)]}
+                style={{objectFit:"cover", maxHeight:"190px"}}
               />
               <CardBody>
-                <CardTitle tag="h5">
+                <CardTitle tag="h5" style={{fontSize:"2rem"}}>
                   {customer.first_name} {customer.last_name}
                 </CardTitle>
                 <CardSubtitle className="mb-2 text-muted" tag="h6">
@@ -83,11 +98,13 @@ function Customers() {
                 </CardSubtitle>
                 <CardText>
                   <strong>DOB:</strong> {customer.date_of_birth}<br />
-                  <strong>Address:</strong> {customer.address}
+                  <strong>Address:</strong> <span className='d-inline-block text-truncate' style={{maxWidth: "150px"}}>{customer.address}</span>
+                  <div><strong>Subscribed Plans:</strong> {userPlans(customer._id).join(",")}</div>
+
                 </CardText>
-                <Button color="primary" onClick={() => handleViewProfile(customer)}>
+                {/* <Button color="primary" onClick={() => handleViewProfile(customer)}>
                   View Profile
-                </Button>
+                </Button> */}
               </CardBody>
             </Card>
           </Col>

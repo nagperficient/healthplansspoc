@@ -1,16 +1,23 @@
 .plan-card {
-  border-radius: 0.5rem;
+  position: relative;
+  border-radius: 3.5rem 0;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   max-width: 620px;
+  min-height: 600px;
   margin: auto;
+  
+}
+
+.plan-card:hover{
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
 
 /* Title & subtitle */
 .plan-title {
   display: block;
-  font-size: 1.125rem;
+  font-size: 1.4rem;
   font-weight: 600;
-  color: #0052cc;
+  color: #023179;
   text-decoration: none;
   margin-bottom: 0.25rem;
 }
@@ -130,4 +137,15 @@
 /* Compare plan */
 .compare-plan {
   font-size: 0.875rem;
+}
+
+.btn-hover-primary:hover{
+  color:#023179
+}
+
+.right-more-dots {
+  position: absolute;
+  top:10px !important;
+  right:10px !important;
+
 }

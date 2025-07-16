@@ -6,89 +6,149 @@ import {
   Col,
   Button,
   Input,
-  Label
+  Label,
+  CardHeader
 } from 'reactstrap';
 import './PlanCard.css';
+import { CheckCircle, Pen, XCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
-const PlanCard = () => (
-  <Card className="plan-card">
-    <CardBody>
 
-      {/* Title & rating */}
-      <a href="#" className="plan-title">
-        Cigna True Choice Courage Medicare (PPO)
-      </a>
-      <div className="plan-number">H7849-086-000</div>
-
-      <div className="star-rating mb-3">
-        <i className="fa fa-star filled" />
-        <i className="fa fa-star filled" />
-        <i className="fa fa-star filled" />
-        <i className="fa fa-star-half-alt filled" />
-        <i className="fa fa-star" />
-        <span className="rating-text">
-          Star Rating <i className="fa fa-question-circle info-icon" />
-        </span>
+const PlanCard = (props) => {
+  const plan = props
+  let navigate = useNavigate();
+  return (
+    <Card className="plan-card">
+      <div className="right-more-dots text-right">
+        <Button size='sm' color="link" onClick={() => plan.editPlan(plan._id)}>
+          <Pen size={12} />
+        </Button>
       </div>
+      <CardBody className="p-0">
 
-      {/* Premium banner */}
-      <div className="premium-banner text-center mb-4">
-        <div className="premium-label">Monthly premium:</div>
-        <div className="premium-value">$0.00</div>
+        {/* Title & rating */}
+        <a href={plan?.plan_url} className="plan-title pb-3">
+          {plan?.plan_name} ({plan?.plan_type})
+        </a>
+        {plan?.plan_number && <div className="plan-number">{plan?.plan_type}</div>}
+        {plan?.plan_rating && <div className="star-rating mb-3">
+          <i className="fa fa-star filled" />
+          <i className="fa fa-star filled" />
+          <i className="fa fa-star filled" />
+          <i className="fa fa-star-half-alt filled" />
+          <i className="fa fa-star" />
+          <span className="rating-text">
+            Star Rating <i className="fa fa-question-circle info-icon" />
+          </span>
+        </div>}
 
-        <div className="premium-buttons mt-3">
-          <Button outline color="light" className="btn-sm">
-            View details
-          </Button>
-          <Button color="light" className="btn-sm enroll-btn ms-2">
-            Enroll in this plan
-          </Button>
+        {/* Premium banner */}
+        <div className="premium-banner text-center mb-4">
+          <div className="premium-label">Monthly premium:</div>
+          <div className="premium-value">${plan?.monthly_premium.toFixed(2)}</div>
+
+          <div className="premium-buttons mt-3">
+            <Button outline color="light" className="btn-sm btn-hover-primary" onClick={()=>navigate(`/customers/healthplan/${plan._id}/${plan.plan_name}`)}>
+              View details
+            </Button>
+            <Button color="light" className="btn-sm enroll-btn ms-2" onClick={plan.entrollPlan}>
+              Enroll in this plan
+            </Button>
+          </div>
         </div>
-      </div>
 
-      {/* Benefits list */}
-      <div className="benefits-section mb-4">
-        <div className="benefits-title">Medical coverage and extra benefits:</div>
-        <ul className="benefits-list">
-          <li><i className="fa fa-check-circle text-success" /> Part B Giveback</li>
-          <li><i className="fa fa-times-circle text-danger" /> Prescription drugs</li>
-          <li><i className="fa fa-check-circle text-success" /> Dental</li>
-          <li><i className="fa fa-check-circle text-success" /> Vision</li>
-          <li><i className="fa fa-check-circle text-success" /> Hearing</li>
-          <li><i className="fa fa-times-circle text-danger" /> Over‑the‑counter drugs</li>
-          <li><i className="fa fa-times-circle text-danger" /> Fitness programs</li>
-        </ul>
-      </div>
+        {/* Benefits list */}
+        <div className="benefits-section mb-4">
+          <div className="benefits-title">Medical coverage and extra benefits:</div>
+          <ul className="benefits-list">
 
-      <hr />
+            <li>
+              {plan?.includes_prescription ? (
+                <CheckCircle className="text-success me-2" size={16} />
+              ) : (
+                <XCircle className="text-danger me-2" size={16} />
+              )}
+              {' '}Prescription drugs
+            </li>
 
-      {/* Copay grid */}
-      <Row className="copay-section mb-3">
-        <Col xs="6">
-          <div className="copay-label">Primary care copay</div>
-          <div className="copay-value">$0 copay per visit</div>
-        </Col>
-        <Col xs="6">
-          <div className="copay-label">Specialist copay</div>
-          <div className="copay-value">$40 copay per visit</div>
-        </Col>
-      </Row>
 
-      {/* Note banner */}
-      <div className="note-banner mb-3">
-        Doesn’t include drug coverage
-      </div>
+            <li>
+              {plan?.dental_coverage ? (
+                <CheckCircle className="text-success me-2" size={16} />
+              ) : (
+                <XCircle className="text-danger me-2" size={16} />
+              )} Dental
+            </li>
+            <li>
+              {plan?.vision_coverage ? (
+                <CheckCircle className="text-success me-2" size={16} />
+              ) : (
+                <XCircle className="text-danger me-2" size={16} />
+              )} Vision
+            </li>
+            {!plan?.hearing_coverage == undefined && <li>
+              {plan?.hearing_coverage ? (
+                <CheckCircle className="text-success me-2" size={16} />
+              ) : (
+                <XCircle className="text-danger me-2" size={16} />
+              )} Hearing
+            </li>}
 
-      {/* Compare Plan */}
-      <div className="d-flex align-items-center compare-plan">
-        <Input type="checkbox" id="comparePlan" />
-        <Label for="comparePlan" className="mb-0 ms-2">
-          Compare Plan
-        </Label>
-      </div>
+            {!plan?.over_the_counter_drugs_coverage == undefined && <li>
+              {plan?.over_the_counter_drugs_coverage ? (
+                <CheckCircle className="text-success me-2" size={16} />
+              ) : (
+                <XCircle className="text-danger me-2" size={16} />
+              )}  Over-the-counter drugs
+            </li>
+            }
+            {!plan.fitness_programs_coverage == undefined && <li>
+              {plan?.fitness_programs_coverage ? (
+                <CheckCircle className="text-success me-2" size={16} />
+              ) : (
+                <XCircle className="text-danger me-2" size={16} />
+              )} Fitness coverage
+            </li>}
 
-    </CardBody>
-  </Card>
-);
+
+          </ul>
+        </div>
+
+        <hr />
+
+        {/* Copay grid */}
+        <Row className="copay-section mb-3">
+          <Col xs="6">
+            <div className="copay-label">Primary care copay</div>
+            <div className="copay-value">${plan?.copay_primary} copay per visit</div>
+          </Col>
+          <Col xs="6">
+            <div className="copay-label">Specialist copay</div>
+            <div className="copay-value">${plan?.copay_specialist} copay per visit</div>
+          </Col>
+        </Row>
+
+        {/* Note banner */}
+        {!plan?.includes_prescription ? (
+          <div className="note-banner">
+            Doesn't include Prescription
+          </div>
+        ) : <div className="note-banner">
+          Includes Prescription
+        </div>}
+
+        {/* Compare Plan */}
+        {/* <div className="d-flex align-items-center compare-plan">
+          <Input type="checkbox" id={`comparePlan-${plan?._id}`} />
+          <Label for={`comparePlan-${plan?._id}`} className="mb-0 ms-2">
+            Compare Plan
+          </Label>
+        </div> */}
+
+      </CardBody>
+    </Card>
+
+  )
+};
 
 export default PlanCard;
