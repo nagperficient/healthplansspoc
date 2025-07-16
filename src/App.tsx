@@ -16,13 +16,16 @@ import SummaryPlanCard from "./components/cards/SummaryPlanCard";
 import EventsNotification from "./components/notification/EventsNotification";
 import CoverageTabs from "./components/tabs/CoverageTabs";
 import PlanDetailsTable from "./components/tables/PlanDetailsTable";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Customers from "./pages/customers/Customers";
+import CustomersHealthPlan from "./pages/customers/CustomersHealthPlan";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <Container fluid expand="lg">
+      {/* <Container fluid expand="lg">
         <HomeNavbar />
         <WelcomeBanner />
         <MedicalCoverageSection imageSrc={imgBuyingLogo} />
@@ -46,7 +49,15 @@ function App() {
         <EventsNotification />
         <CoverageTabs />
         <PlanDetailsTable />
-      </Container>
+      </Container> */}
+    <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<LoginScreen />} />
+          <Route path="/customers" element={<Customers />} />
+          <Route path="/customershealthplan" element={<CustomersHealthPlan />} />
+        </Routes>
+      </BrowserRouter>
+
     </>
   );
 }
