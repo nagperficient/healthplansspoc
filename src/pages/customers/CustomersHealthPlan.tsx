@@ -187,7 +187,7 @@ const customerdata = [
 function CustomersHealthPlan() {
   const [modal, setModal] = useState(true);
   const userContent = JSON.parse(localStorage.getItem("userData") || "{}") as any;
-  const { healthplansData, customerhealthplansData } = use(StoreContext)
+  const { healthplansData, customerhealthplansData, handleContextSubmit } = use<any>(StoreContext)
   const [healthPlans, setHealthPlans] = useState([]);
   const { isAuthenticated, isLoading } = useAuth()
   const [selectedCustomer, setSelectedCustomer] = useState<null | any>(null);
@@ -212,13 +212,15 @@ function CustomersHealthPlan() {
 
   const editHealthPlan = (planId: string) => {
     setSelectedPlan(planId)
+   // handleContextSubmit(,"profile")
+    
   }
   useEffect(() => {
 
     if (isAuthenticated) {
       if (userContent.role === "user") {
-        const selectedPlans = customerhealthplansData.filter(plan => +plan.customer_id === +userContent._id).map(val => +val.plan_id);
-        const updatedHealthPlans = healthplansData.filter(plan => selectedPlans.includes(+plan._id))
+        const selectedPlans = customerhealthplansData.filter((plan:any) => +plan.customer_id === +userContent._id).map((val:any) => +val.plan_id);
+        const updatedHealthPlans = healthplansData.filter((plan:any) => selectedPlans.includes(+plan._id))
         setHealthPlans(updatedHealthPlans)
       }
     }
@@ -241,7 +243,7 @@ function CustomersHealthPlan() {
       <h4 className="my-3">Health Plans</h4>
       <br />
       <Row>
-        {(userContent.role === "user" ? healthPlans : healthplansData)?.map((plan) => (
+        {(userContent.role === "user" ? healthPlans : healthplansData)?.map((plan:any) => (
           <Col sm="12" md="6" lg="4" className="mb-4" key={plan?._id}>
 
             <PlanCard

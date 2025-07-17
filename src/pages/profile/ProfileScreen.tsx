@@ -1,5 +1,5 @@
 import { CameraIcon, Pen } from 'lucide-react'
-import React, { use } from 'react'
+import React, { use, useEffect } from 'react'
 import {
     Container,
     Row,
@@ -15,8 +15,17 @@ import { StoreContext } from '../../hooks/contexts/GlobalContext'
 // Don't forget in your entrypoint (e.g. index.js) to import Bootstrap's CSS:
 // import 'bootstrap/dist/css/bootstrap.min.css'
 
+const myprofiledata:any = {
+    "id": 3,
+    "first_name": "Carol",
+    "last_name": "Williams",
+    "email": "carol.williams@email.com",
+    "date_of_birth": "1978-11-02",
+    "address": "789 Pine St, Los Angeles, CA"
+}
+
 const ProfileScreen = () => {
-    const { loggedinUser } = use(StoreContext) as any;
+    const { loggedinUser, getAllData } = use(StoreContext) as any;
     const user = JSON.parse(localStorage.getItem("userData")||"{}") as any
     const users = loggedinUser || {
         firstName: 'Natashia',
@@ -38,6 +47,24 @@ const ProfileScreen = () => {
     const handleEditAddress = () => {
         // open address form…
     }
+
+    function generateDummyPhoneNumber() {
+  const getRandom = (min, max) =>
+    Math.floor(Math.random() * (max - min + 1)) + min;
+
+  const areaCode = getRandom(200, 999);  // avoid real codes like 911
+  const prefix = getRandom(100, 999);
+  const lineNumber = getRandom(1000, 9999);
+
+  return `${areaCode}-${prefix}-${lineNumber}`;
+}
+
+    useEffect(() => {
+      getAllData()
+    
+      
+    }, [])
+    
 
     return (
         <Container className="py-4">
@@ -104,12 +131,13 @@ const ProfileScreen = () => {
                             <p>{user.email}</p>
                         </Col>
                         <Col md="4">
-                            <small className="text-uppercase text-muted">Phone Number</small>
-                            <p>{user.phone}</p>
+                            <small className="text-uppercase text-muted">Phone Number</small> <br/>
+                             <p>{user.phone ? user.phone : "--"}</p>
+                                           
                         </Col>
                         <Col md="4">
                             <small className="text-uppercase text-muted">User Role</small>
-                            <p>{user.role}</p>
+                            <p>{user.role ? user.role : "--"}</p>
                         </Col>
                     </Row>
                 </CardBody>
@@ -129,15 +157,15 @@ const ProfileScreen = () => {
                     <Row>
                         <Col md="4">
                             <small className="text-uppercase text-muted">Country</small>
-                            <p>{user.country}</p>
+                            <p>{user.country ? user.country : "--"}</p>
                         </Col>
                         <Col md="4">
                             <small className="text-uppercase text-muted">City</small>
-                            <p>{user.city}</p>
+                            <p>{user.city ? user.city : "--"}</p>
                         </Col>
                         <Col md="4">
                             <small className="text-uppercase text-muted">Postal Code</small>
-                            <p>{user.postalCode}</p>
+                            <p>{user.postalCode ? user.postalCode : "--"}</p>
                         </Col>
                     </Row>
                 </CardBody>

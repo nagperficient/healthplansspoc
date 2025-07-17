@@ -13,6 +13,7 @@ import './LoginScreen.css';
 import { logoWhite } from '../../utils/Images';
 import { toast } from 'react-toastify';
 import { StoreContext } from '../../hooks/contexts/GlobalContext';
+
 const userRoles = [
   {
         firstName: 'Natashia',
@@ -43,20 +44,33 @@ const userRoles = [
         location: 'Leeds, United Kingdom',
         avatarUrl: '/path/to/avatar.jpg',
         _id:3
-    }
+    },
+    {
+      _id: 3,
+      firstName: "Carol",
+      lastName: "Williams",
+      role:"user",
+      email: "carol.williams@email.com",
+      password: "cigna@8",
+      dob: "1978-11-02",
+      location: "789 Pine St, Los Angeles, CA",
+      country:'',
+      city:'',
+      postalCode:""
+}
 ]
 const LoginScreen = () => {
   const {setUser} = use(StoreContext) as any
   const [formValues, setFormValues] = useState({}) as any;
 
   const handleOnChange = (e: any) => {
-    setFormValues((prevValues) => ({
+    setFormValues((prevValues:any) => ({
       ...prevValues,
       [e.target.name]: e.target.value
     }))
   }
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
 
     const user = userRoles.find(
@@ -64,8 +78,6 @@ const LoginScreen = () => {
     );
 
     if (user) {
-
-
       await Promise.resolve().then(() => {
         localStorage.setItem("userData", JSON.stringify({...user,password:"denied"}))
         setUser({...user,password:"denied"})

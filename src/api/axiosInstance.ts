@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASEURL  = "http://10.99.34.198:8080";
+const BASEURL  = "http://10.99.34.31:8085";
 
 const axiosInstance = axios.create({
   baseURL: BASEURL,
@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    console.log(`[Request] ${config.method.toUpperCase()} ${config.url}`, config);
+    console.log(`[Request] ${config.method?.toUpperCase()} ${config.url}`, config);
     return config;
   },
   (error) => {

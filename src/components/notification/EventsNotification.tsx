@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Connect to your backend WebSocket server
-const socket = io('http://localhost:4000'); // Replace with your actual backend URL
+const socket = io('http://10.99.34.105:8080'); // Replace with your actual backend URL
 
 export default function EventsNotification() {
   const [messages, setMessages] = useState<any[]>([]);
