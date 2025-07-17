@@ -10,6 +10,7 @@ import {
 } from 'reactstrap'
 import { customerLogo, imgBuyingLogo } from '../../utils/Images'
 import { StoreContext } from '../../hooks/contexts/GlobalContext'
+import { UserDataContext } from '../../hooks/contexts/UserContext'
 // or any icon lib
 
 // Don't forget in your entrypoint (e.g. index.js) to import Bootstrap's CSS:
@@ -17,6 +18,8 @@ import { StoreContext } from '../../hooks/contexts/GlobalContext'
 
 const ProfileScreen = () => {
     const { loggedinUser } = use(StoreContext) as any;
+    const { userData  } = use(UserDataContext) as any;
+    const { profile, plans, planDetails } = userData
     const user = JSON.parse(localStorage.getItem("userData")||"{}") as any
     const users = loggedinUser || {
         firstName: 'Natashia',
@@ -43,6 +46,9 @@ const ProfileScreen = () => {
         <Container className="py-4">
             {/* Profile Header */}
             <h4 className="mb-4">My Profile</h4>
+            {/* {JSON.stringify(profile)}
+            {JSON.stringify(plans)}
+            {JSON.stringify(planDetails)} */}
             <Card className="mb-4 shadow-sm">
                 <CardBody>
                     <Row className="align-items-center">
@@ -129,15 +135,15 @@ const ProfileScreen = () => {
                     <Row>
                         <Col md="4">
                             <small className="text-uppercase text-muted">Country</small>
-                            <p>{user.country}</p>
+                            <p>{user.address ? user.address?.split(",")[0]:"--"}</p>
                         </Col>
                         <Col md="4">
                             <small className="text-uppercase text-muted">City</small>
-                            <p>{user.city}</p>
+                            <p>{user.address ? user.address?.split(",")[1]:"--"}</p>
                         </Col>
                         <Col md="4">
                             <small className="text-uppercase text-muted">Postal Code</small>
-                            <p>{user.postalCode}</p>
+                            <p>{user.address ? user.address?.split(",")[2]:"--"}</p>
                         </Col>
                     </Row>
                 </CardBody>

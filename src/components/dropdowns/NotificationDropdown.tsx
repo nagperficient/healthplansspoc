@@ -21,6 +21,7 @@ const NotificationDropdown = () => {
     { id: 3, message: 'Server backup completed', time: '1 hour ago' }
   ];
 
+
   return (
     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
       <DropdownToggle caret={false} color="light" className='nav-link btn btn-info'>
@@ -31,18 +32,8 @@ const NotificationDropdown = () => {
       </DropdownToggle>
       <DropdownMenu className="notification-dropdown-menu shadow-lg">
         <DropdownItem header>Notifications</DropdownItem>
-        {notifications.map((note) => (
-          <DropdownItem key={note.id}>
-            <div>
-              <span className='text-success'>{note.message}</span>
-              <div className="text-info small">{note.time}</div>
-            </div>
-            <div>
-              <EventsNotification />
-            </div>
-            <DropdownItem divider />
-          </DropdownItem>
-        ))}
+        <EventsNotification />
+        
         {/* <DropdownItem divider />
         <DropdownItem>View All</DropdownItem> */}
       </DropdownMenu>

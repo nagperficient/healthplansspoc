@@ -1,29 +1,40 @@
 import React, { Fragment, useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert, Badge } from 'reactstrap';
 
 function AlertModal(props) {
-    const {toggle,customers, title} = props;
+  const { toggle, customers, title, message } = props;
 
 
   return (
     <div>
-      
+
       <Modal isOpen={true} toggle={toggle}>
-        <ModalHeader toggle={toggle}>{title}</ModalHeader>
+        <ModalHeader toggle={toggle} className="text-primary">{title}</ModalHeader>
         <ModalBody>
-         <h4>Updated Plan details for the below customers</h4>
-            {customers?.map((val,index) => {
-                return (
-                    <Fragment key={index}><p>{val.customer_id} of the plan {val.plan_id}</p>
-                    <p>Enrolled on {val.enrollment_date}</p></Fragment>
-                )
+          <Alert>
+            <h4>Updated Plan details for the below customers</h4>
+            {customers?.map((val, index) => {
+              return (
+                <Fragment key={index}>
+
+                  <p>
+                    Customer id: <Badge color="primary">
+                      {val.customer_id}
+                    </Badge> of the plan: <Badge color="info">{val.plan_id}</Badge>
+                  </p>
+                  <hr />
+                  <p>{message}</p>
+                  <p>Enrolled on <Badge color="success">{val.enrollment_date}</Badge></p>
+                </Fragment>
+              )
             })}
+          </Alert>
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={toggle}>
             close
           </Button>{' '}
-         
+
         </ModalFooter>
       </Modal>
     </div>

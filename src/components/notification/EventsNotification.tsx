@@ -2,43 +2,57 @@ import React, { useEffect, useState } from 'react';
 import io from 'socket.io-client';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { DropdownItem } from 'reactstrap';
 
-// Connect to your backend WebSocket server
-const socket = io('http://localhost:4000'); // Replace with your actual backend URL
+// adjust the URL if your backend is elsewhere
+// const socket = io('http://10.99.34.198:9092'); 
+
+
 
 export default function EventsNotification() {
-  const [messages, setMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState([
+    { id: 1, message: 'New user registered', time: '2 mins ago' },
+    { id: 2, message: 'Health plan updated', time: '10 mins ago' },
+    { id: 3, message: 'Server backup completed', time: '1 hour ago' }
+  ])
+
 
   useEffect(() => {
-    socket.on('kafka-notification', (data) => {
-      // Show toast
-      toast.info(data.message || JSON.stringify(data), {
-        position: 'top-right',
-        autoClose: 5000,
-        pauseOnHover: true,
-      });
+    // Listen for events from the server
+    // socket.on('benifit-events', (data) => {
+    //   // Customize your toast — here we assume data has a `message` field
+    //   toast.info(data.message || JSON.stringify(data), {
+    //     position: 'top-right',
+    //     autoClose: 5000,
+    //     pauseOnHover: true,
+    //   });
+    // });
+    const socket = new WebSocket('ws://10.99.34.105:8080/ws/customer-events');
 
-      // Update live messages
-      setMessages((prev) => [data, ...prev]);
-    });
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      // show toast or do whatever with data
+      setMessages(prevMessages => ({ ...prevMessages, data }))
+    };
 
+    // Clean up on unmount
     return () => {
-      socket.off('kafka-notification');
+      // socket.off('kafka-notification');
     };
   }, []);
 
-  return (
-    <div style={{ padding: '1rem' }}>
-      <h4>Live Notifications</h4>
-      <ul>
-        {messages.map((msg, index) => (
-          <li key={index}>
-            <strong>{msg.title || 'Notification'}:</strong> {msg.message || JSON.stringify(msg)}
-          </li>
-        ))}
-      </ul>
 
-      <ToastContainer />
-    </div>
-  );
+
+  return (<div>{messages.map((note) => (
+    <DropdownItem key={note.id}>
+      <div>
+        <span className='text-success'>{note.message}</span>
+        <div className="text-info small">{note.time}</div>
+      </div>
+      <div>
+
+      </div>
+      <DropdownItem divider />
+    </DropdownItem>
+  ))}</div>);
 }

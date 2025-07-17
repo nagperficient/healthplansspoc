@@ -6,13 +6,13 @@ import {
   Collapse,
   Nav,
   NavItem,
-  NavLink,
   Container,
   Button,
 } from "reactstrap";
 import "./HomeNavbar.css";
 import { logoWhite } from "../../utils/Images";
 import useAuth from "../../hooks/useAuth";
+import { NavLink } from "react-router-dom";
 
 const HomeNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,12 +35,12 @@ const HomeNavbar = () => {
           <Collapse isOpen={isOpen} navbar className="justify-content-end">
             <Nav className="mr-auto align-items-center" navbar>
               <NavItem>
-                <NavLink href="/customers/healthplan">
+                <NavLink to="/customers/healthplan" className="nav-link">
                   For <span className="highlight">Medicare</span>
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/customers">
+                <NavLink to="/customers" className="nav-link">
                   For <span className="highlight">Customers</span>
                 </NavLink>
               </NavItem>
@@ -59,7 +59,7 @@ const HomeNavbar = () => {
               <div className="nav-divider" />
 
               <NavItem>
-                {!isAuthenticated ? <NavLink href="/login" className="search-link btn btn-outline-primary px-4 shadow-lg">
+                {!isAuthenticated ? <NavLink to="/login" className="search-link btn btn-outline-primary px-4 shadow-lg">
                   Login
                 </NavLink>:
                 <Button className="search-link px-4 shadow-lg" color="primary" onClick={()=>{

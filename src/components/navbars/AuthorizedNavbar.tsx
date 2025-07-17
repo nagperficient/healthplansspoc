@@ -6,7 +6,6 @@ import {
   Collapse,
   Nav,
   NavItem,
-  NavLink,
   Container,
   Button,
   DropdownItem,
@@ -18,6 +17,7 @@ import "./HomeNavbar.css";
 import { logoWhite } from "../../utils/Images";
 import { Bell, User } from "lucide-react";
 import AuthDropDown from "../dropdowns/AuthDropDown";
+import { NavLink } from "react-router-dom";
 
 const AuthorizedNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,16 +38,19 @@ const AuthorizedNavbar = () => {
           <NavbarToggler onClick={toggle} />
           <Collapse isOpen={isOpen} navbar className="justify-content-end">
             <Nav className="mr-auto align-items-center" navbar>
-              <NavItem>
-                <NavLink href="/customers/healthplan">
-                  For <span className="highlight">Medicare</span>
+              <div className="d-flex align-items-center justify-content-between">
+                <NavItem>
+                <NavLink to="/customers/healthplan" className="nav-link">
+                  <span className="text-dark">For</span> <span className="highlight">Medicare</span>
                 </NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/customers">
+                <NavLink to="/customers" className="nav-link">
                   For <span className="highlight">Customers</span>
                 </NavLink>
               </NavItem>
+              </div>
+              
 
               {/* vertical divider */}
               <div className="nav-divider" />

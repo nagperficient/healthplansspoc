@@ -19,11 +19,11 @@ const PlanCard = (props) => {
   let navigate = useNavigate();
   return (
     <Card className="plan-card">
-      <div className="right-more-dots text-right">
+      {plan.userRole === "admin" && <div className="right-more-dots text-right">
         <Button size='sm' color="link" onClick={() => plan.editPlan(plan._id)}>
           <Pen size={12} />
         </Button>
-      </div>
+      </div>}
       <CardBody className="p-0">
 
         {/* Title & rating */}

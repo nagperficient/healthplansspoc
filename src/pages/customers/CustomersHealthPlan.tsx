@@ -192,6 +192,7 @@ function CustomersHealthPlan() {
   const { isAuthenticated, isLoading } = useAuth()
   const [selectedCustomer, setSelectedCustomer] = useState<null | any>(null);
   const [selectedPlan, setSelectedPlan] = useState<null | any>(null);
+  const [showMore, setShowMore] = useState(false)
 
   const toggleModal = () => { setModal(!modal); setSelectedPlan("") };
 
@@ -232,16 +233,20 @@ function CustomersHealthPlan() {
   } else if (!isAuthenticated) {
     window.location.href = "/login"
   }
-  if(!isAuthenticated){
+  if (!isAuthenticated) {
     return <div>Loading...</div>
   }
 
   return (
     <div className="container mt-4">
-      <h4 className="my-3">Health Plans</h4>
+      <div className="d-flex align-items-center justify-content-between">
+        <h4 className="my-3">Health Plans</h4>
+        <Button outline color='primary' className='rounded-pill' onClick={()=>setShowMore(!showMore)}>{showMore ? "Subscribed plans":"Show all plans"}</Button>
+      </div>
+
       <br />
       <Row>
-        {(userContent.role === "user" ? healthPlans : healthplansData)?.map((plan) => (
+        {((userContent.role === "user" && !showMore) ? healthPlans : healthplansData)?.map((plan) => (
           <Col sm="12" md="6" lg="4" className="mb-4" key={plan?._id}>
 
             <PlanCard
@@ -263,6 +268,7 @@ function CustomersHealthPlan() {
               // plan_url={plan.plan_url}
               // plan_notes={plan.plan_notes}
               // effective_date={plan.effective_date}
+              userRole={userContent.role}
               editPlan={editHealthPlan}
               entrollPlan={accessPlanDenied}
               {...plan}
