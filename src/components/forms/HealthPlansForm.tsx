@@ -3,6 +3,7 @@ import { Form, Row, Col, FormGroup, Label, Input, Button } from 'reactstrap'
 import { StoreContext } from '../../hooks/contexts/GlobalContext';
 import AlertModal from '../modalPopups/AlertModal';
 import { useNavigate } from 'react-router-dom';
+import { LoaderIcon } from 'lucide-react';
 
 type Props = {}
 const enabled = ["plan_name", "effective_date", "plan_type", "coverage_area", "coinsurance", "plan_url", "provider"]
@@ -26,18 +27,20 @@ const formData = [
     { label: "Plan URL", key: "plan_url", type: "text" },
     { label: "Plan Notes", key: "plan_notes", type: "text" },
     { label: "Effective Date", key: "effective_date", type: "text" },
+    { label: "Event Message", key: "event_message", type: "textarea" },
     //   { label: "ID", key: "_id" }
 ];
 
 
 const HealthPlansForm = (props: any) => {
-    const {customerhealthplansData} = use(StoreContext);
+    const { customerhealthplansData, fetchData } = use(StoreContext);
     const navigate = useNavigate();
     // const { _id, plan_name, plan_type, provider, coverage_area, monthly_premium, deductible, coinsurance, copay_primary, copay_specialist, out_of_pocket_max, network_type, referral_required, includes_prescription, dental_coverage, vision_coverage, plan_url, plan_notes, effective_date } = props;
     const [formValues, setFormValues] = useState({}) as any
     const [showAlert, setShowAlert] = useState<JSX.Element[]>([]) as any;
-    
-  
+    const [isLoading, setisLoading] = useState(false);
+
+
 
     const handlechange = (e: any, keyValue: string) => {
         setFormValues((prevValues: any) => ({
@@ -45,16 +48,54 @@ const HealthPlansForm = (props: any) => {
             [keyValue]: e.target.value
         }))
     }
-    const handleOnSubmit = () => {
-        const customers = customerhealthplansData?.filter(val=> +val.plan_id === +props._id)
+    const handleOnSubmit = async () => {
+        setisLoading(true)
         console.log({
-            ...formValues,
-            _id: props._id,
-            plan_notes: formValues.plan_notes||props.plan_notes,
-            customers
-        }, props._id);
-        setShowAlert([<AlertModal title="Alert" toggle={()=>{setShowAlert([]);props.toggle()}} customers={customers} />])
+                    
+                    "fields":{...formValues},
+                    id: props.id,
+                    plan_name:props.plan_name,
+                    plan_type: props.plan_type,
+                    provider: props.provider,
+                    created_at: Date.now(),
+                    event_message: formValues.event_message || "",
+                    // customers
+                })
+        
+        const customers = customerhealthplansData?.filter(val => +val.plan_id === +props.id)
+        try {
+            const response = await fetch("http://10.99.34.31:8085/healthplans/publish", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    
+                    "fields":{...formValues},
+                    id: props.id,
+                    plan_name:props.plan_name,
+                    plan_type: props.plan_type,
+                    provider: props.provider,
+                    created_at: new Date(),                    
+                    event_message: formValues.event_message || "",
+                    // customers
+                }),
+            });
 
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            
+            setShowAlert([<AlertModal message={formValues.event_message} title="Alert" toggle={() => { setShowAlert([]); props.toggle() }} customers={customers} />])
+            setisLoading(false)
+            fetchData()
+        } catch (error) {
+            console.error('Switch failed:', error);
+            throw error;
+        }
+
+ setisLoading(false)
     }
     return (
         <div><Form>
@@ -74,6 +115,15 @@ const HealthPlansForm = (props: any) => {
                                     onChange={(e) => handlechange(e, val.key)}
                                     value={formValues[val.key] || props[val.key]}
                                     type="text"
+                                />}
+                                {val.type == "textarea" && <Input
+                                    id={val.key}
+                                    name={val.key}
+                                    placeholder={val.label}
+                                    disabled={enabled.includes(val.key)}
+                                    onChange={(e) => handlechange(e, val.key)}
+                                    value={formValues[val.key] || props[val.key]}
+                                    type="textarea"
                                 />}
                                 {val.type == "number" &&
                                     <Input
@@ -115,11 +165,11 @@ const HealthPlansForm = (props: any) => {
 
             </Row>
 
-            <Button onClick={handleOnSubmit} block className="my-4" color="primary">
-                Submit
+            <Button disabled={isLoading} onClick={handleOnSubmit} block className="my-4" color="primary">
+                {isLoading ? <LoaderIcon /> : "Submit"}
             </Button>
         </Form>
-        {showAlert && showAlert[0]}
+            {showAlert && showAlert[0]}
         </div>
     )
 }

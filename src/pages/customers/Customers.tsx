@@ -79,7 +79,7 @@ function Customers() {
  
   return (
     <div className="container mt-4">
-      <h4 className="my-4">Customers{JSON.stringify(isAuthenticated)}</h4>
+      <h4 className="my-4">Customers</h4>
       <Row>
         {customersdata.map((customer) => (
           <Col sm="12" md="6" lg="4" className="mb-4" key={customer._id} style={{position:"relative",overflow:"hidden"}}>

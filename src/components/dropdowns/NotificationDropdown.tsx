@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import {
   Dropdown,
   DropdownToggle,
@@ -9,8 +9,12 @@ import {
 import { Bell, User } from 'lucide-react'; // Optional: Lucide icon
 import "./NotificationDropdown.css"
 import EventsNotification from '../notification/EventsNotification';
+import { StoreContext } from '../../hooks/contexts/GlobalContext';
+import { UserDataContext } from '../../hooks/contexts/UserContext';
 
 const NotificationDropdown = () => {
+  const {eventMessages} = use(StoreContext)
+  const {plans,profile} = use(UserDataContext)
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggle = () => setDropdownOpen(prevState => !prevState);
@@ -20,29 +24,23 @@ const NotificationDropdown = () => {
     { id: 2, message: 'Health plan updated', time: '10 mins ago' },
     { id: 3, message: 'Server backup completed', time: '1 hour ago' }
   ];
+const filteredEvents = eventMessages && eventMessages?.filter(
+    (event) =>plans?.includes(event.customer_health_plan?.plan_id)
+  );
+  console.log("filteredEvents",eventMessages)
 
   return (
     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
       <DropdownToggle caret={false} color="light" className='nav-link btn btn-info'>
         <Bell size={20} />
         <Badge color="danger" pill className="me-1">
-          {notifications.length}
+          {profile?.role === "user" ? filteredEvents?.length||0 : eventMessages.length||0}
         </Badge>
       </DropdownToggle>
       <DropdownMenu className="notification-dropdown-menu shadow-lg">
         <DropdownItem header>Notifications</DropdownItem>
-        {notifications.map((note) => (
-          <DropdownItem key={note.id}>
-            <div>
-              <span className='text-success'>{note.message}</span>
-              <div className="text-info small">{note.time}</div>
-            </div>
-            <div>
-              <EventsNotification />
-            </div>
-            <DropdownItem divider />
-          </DropdownItem>
-        ))}
+        <EventsNotification />
+        
         {/* <DropdownItem divider />
         <DropdownItem>View All</DropdownItem> */}
       </DropdownMenu>

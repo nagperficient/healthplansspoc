@@ -17,6 +17,7 @@
   font-weight: 500;
   margin: 0 0.75rem;
   white-space: nowrap;
+  text-decoration: none;
 }
 
 .highlight {

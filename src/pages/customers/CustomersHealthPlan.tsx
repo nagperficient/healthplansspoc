@@ -20,6 +20,8 @@ import PlanCard from '../../components/cards/PlanCard';
 import { toast } from 'react-toastify';
 import { StoreContext } from '../../hooks/contexts/GlobalContext';
 import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import { UserDataContext } from '../../hooks/contexts/UserContext';
 
 //healthplans
 
@@ -185,13 +187,17 @@ const customerdata = [
 ];
 
 function CustomersHealthPlan() {
+  const navigate = useNavigate()
   const [modal, setModal] = useState(true);
-  const userContent = JSON.parse(localStorage.getItem("userData") || "{}") as any;
-  const { healthplansData, customerhealthplansData, handleContextSubmit } = use<any>(StoreContext)
+  const userContent = JSON.parse(localStorage.getItem("userData") || "{}").profile as any;
+  const userPlans = JSON.parse(localStorage.getItem("userData") || "{}").planDetails as any;
+  const { healthplansData, customerhealthplansData } = use(StoreContext)
+  const { planDetails } = use(UserDataContext)
   const [healthPlans, setHealthPlans] = useState([]);
   const { isAuthenticated, isLoading } = useAuth()
   const [selectedCustomer, setSelectedCustomer] = useState<null | any>(null);
   const [selectedPlan, setSelectedPlan] = useState<null | any>(null);
+  const [showMore, setShowMore] = useState(false)
 
   const toggleModal = () => { setModal(!modal); setSelectedPlan("") };
 
@@ -211,6 +217,7 @@ function CustomersHealthPlan() {
   }
 
   const editHealthPlan = (planId: string) => {
+    
     setSelectedPlan(planId)
    // handleContextSubmit(,"profile")
     
@@ -219,9 +226,10 @@ function CustomersHealthPlan() {
 
     if (isAuthenticated) {
       if (userContent.role === "user") {
-        const selectedPlans = customerhealthplansData.filter((plan:any) => +plan.customer_id === +userContent._id).map((val:any) => +val.plan_id);
-        const updatedHealthPlans = healthplansData.filter((plan:any) => selectedPlans.includes(+plan._id))
+        const selectedPlans = customerhealthplansData.filter(plan => +plan.customer_id === +userContent.id).map(val => +val.plan_id);
+        const updatedHealthPlans = healthplansData.filter(plan => selectedPlans.includes(+plan.id))
         setHealthPlans(updatedHealthPlans)
+        // setHealthPlans(userPlans)
       }
     }
     return () => {
@@ -232,19 +240,23 @@ function CustomersHealthPlan() {
   if (isLoading) {
     return <div>Loading..</div>
   } else if (!isAuthenticated) {
-    window.location.href = "/login"
+    navigate("/login")
   }
-  if(!isAuthenticated){
+  if (!isAuthenticated) {
     return <div>Loading...</div>
   }
 
   return (
     <div className="container mt-4">
-      <h4 className="my-3">Health Plans</h4>
+      <div className="d-flex align-items-center justify-content-between">
+        <h4 className="my-3">Health Plans</h4>
+        {userContent.role === "user" && <Button outline color='primary' className='rounded-pill' onClick={()=>setShowMore(!showMore)}>{showMore ? "Subscribed plans":"Show all plans"}</Button>}
+      </div>
+
       <br />
       <Row>
-        {(userContent.role === "user" ? healthPlans : healthplansData)?.map((plan:any) => (
-          <Col sm="12" md="6" lg="4" className="mb-4" key={plan?._id}>
+        {((userContent.role === "user" && !showMore) ? (planDetails||healthPlans) : healthplansData)?.map((plan) => (
+          <Col sm="12" md="6" lg="4" className="mb-4" key={plan?.id}>
 
             <PlanCard
               // plan_name={plan.plan_name}
@@ -265,6 +277,7 @@ function CustomersHealthPlan() {
               // plan_url={plan.plan_url}
               // plan_notes={plan.plan_notes}
               // effective_date={plan.effective_date}
+              userRole={userContent.role}
               editPlan={editHealthPlan}
               entrollPlan={accessPlanDenied}
               {...plan}

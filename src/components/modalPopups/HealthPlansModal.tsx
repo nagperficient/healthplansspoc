@@ -13,7 +13,7 @@ type Props = {
 const HealthPlansModal = (props: Props) => {
     const { isOpen, toggle, planId } = props;
     const { healthplansData } = use(StoreContext) as any;
-    const selectedPlan = healthplansData?.find(val => val._id === planId)
+    const selectedPlan = healthplansData?.find(val => val.id === planId)
     console.log(Object.keys(selectedPlan))
     return (
         <div>

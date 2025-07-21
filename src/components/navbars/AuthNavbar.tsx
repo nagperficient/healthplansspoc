@@ -6,12 +6,12 @@ import {
     Collapse,
     Nav,
     NavItem,
-    NavLink,
     Container,
 } from "reactstrap";
 import "./HomeNavbar.css";
 import { logoWhite } from "../../utils/Images";
 import { ArrowLeft } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
 const AuthNavbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +34,7 @@ const AuthNavbar = () => {
                         <Nav className="mr-auto align-items-center" navbar>
                             
                             <NavItem>
-                                <NavLink href="/">
+                                <NavLink to="/" className="nav-link">
                                     <ArrowLeft size={14} /> Back to <span className="highlight">Home</span>
                                 </NavLink>
                             </NavItem>

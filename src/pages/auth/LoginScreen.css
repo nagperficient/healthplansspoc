@@ -57,15 +57,15 @@
 }
 
 .login-form .form-control:focus {
-  border-color: #7f5af0;
-  box-shadow: 0 0 0 0.2rem rgba(127, 90, 240, 0.25);
+  border-color: #2174c1;
+  box-shadow: 0 0 0 0.2rem rgba(40, 78, 203, 0.25);
 }
 
 .forgot-link {
   display: block;
   margin-top: 0.5rem;
   font-size: 0.875rem;
-  color: #7f5af0;
+  color: #2174c1;
 }
 
 .remember-switch {
@@ -124,6 +124,6 @@
   font-size: 0.875rem;
 }
 .signup a {
-  color: #7f5af0;
+  color: #2174c1;
   font-weight: 600;
 }
