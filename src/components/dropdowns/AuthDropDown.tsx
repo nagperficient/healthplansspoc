@@ -18,7 +18,7 @@ const AuthDropDown = (props: Props) => {
             <NotificationDropdown />
             <div className="user-logout-status-dropdown">
                  <Button className='nav-link btn btn-info d-flex align-items-center justify-content-center gap-2' onClick={toggle}>
-                <User size={20} /><span>{isLoggedInUser.firstName}({isLoggedInUser?.role})</span>
+                <User size={20} /><span>{isLoggedInUser?.first_name}({isLoggedInUser?.role})</span>
             </Button>
             <div className='user-logout-status-dropdown-box'>
                  <List type="unstyled" className="d-flex flex-column listitem align-items-center justify-content-start px-1 py-2">

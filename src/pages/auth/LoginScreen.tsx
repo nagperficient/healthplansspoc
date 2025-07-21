@@ -13,41 +13,50 @@ import './LoginScreen.css';
 import { logoWhite } from '../../utils/Images';
 import { toast } from 'react-toastify';
 import { StoreContext } from '../../hooks/contexts/GlobalContext';
+import apiService from '../../api/apiService';
+import { LoaderIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useUserData } from '../../hooks/contexts/UserContext';
 const userRoles = [
   {
-        firstName: 'Natashia',
-        lastName: 'Khaleira',
-        dob: '12-10-1990',
-        email: 'admin@cigna.com',
-        phone: '(+62) 821 2554-5846',
-        role: 'admin',
-        password: "cigna@8",
-        country: 'United Kingdom',
-        city: 'Leeds, East London',
-        postalCode: 'ERT 1254',
-        location: 'Leeds, United Kingdom',
-        avatarUrl: '/path/to/avatar.jpg',
-        _id:1
-    },
+    first_name: 'Natashia',
+    last_name: 'Khaleira',
+    date_of_birth: '12-10-1990',
+    email: 'admin@cigna.com',
+    phone: '(+62) 821 2554-5846',
+    role: 'admin',
+    password: "cigna@8",
+    address: "456 Oak St, Miami, FL",
+    city: 'Leeds, East London',
+    postalCode: 'ERT 1254',
+    location: 'Leeds, United Kingdom',
+    avatarUrl: '/path/to/avatar.jpg',
+    _id: 1
+  },
   {
-        firstName: 'Jekovich',
-        lastName: 'Remson',
-        dob: '12-10-1991',
-        email: 'user@cigna.com',
-        phone: '(+62) 821 2554-5846',
-        role: 'user',
-        password: "cigna@8",
-        country: 'United Kingdom',
-        city: 'Leeds, East London',
-        postalCode: 'ERT 1254',
-        location: 'Leeds, United Kingdom',
-        avatarUrl: '/path/to/avatar.jpg',
-        _id:3
-    }
+    firstName: 'Jekovich',
+    lastName: 'Remson',
+    dob: '12-10-1991',
+    email: 'user@cigna.com',
+    phone: '(+62) 821 2554-5846',
+    role: 'user',
+    password: "cigna@8",
+    country: 'United Kingdom',
+    city: 'Leeds, East London',
+    postalCode: 'ERT 1254',
+    location: 'Leeds, United Kingdom',
+    avatarUrl: '/path/to/avatar.jpg',
+    _id: 3
+  }
 ]
 const LoginScreen = () => {
-  const {setUser} = use(StoreContext) as any
+  const { updateUserData } = useUserData();
+  const navigate = useNavigate();
+  const { setUser } = use(StoreContext) as any
   const [formValues, setFormValues] = useState({}) as any;
+  const [cusData, setCusData] = useState({})
+  const [loading, setLoading] = useState(false);
+
 
   const handleOnChange = (e: any) => {
     setFormValues((prevValues) => ({
@@ -56,33 +65,85 @@ const LoginScreen = () => {
     }))
   }
 
+  const handleSubmitUserData = (data, key) => {
+    setCusData(prevData => ({
+      ...prevData,
+      [key]: data
+    }))
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const user = userRoles.find(
-      (u) => u.email === formValues.email && u.password === formValues.password
-    );
+    // const data = await apiService.get(`/email/${formValues.email}`)
+    // console.log(data)
+    // data.then(val=> console.log(val.data))
+    // console.log(data,"user profiled data")
 
-    if (user) {
-
-
-      await Promise.resolve().then(() => {
-        localStorage.setItem("userData", JSON.stringify({...user,password:"denied"}))
-        setUser({...user,password:"denied"})
-      });
-
-      setTimeout(() => {
-        window.location.href="/profile"
-      }, 1000);
+    const fetchUserData = async () => {
 
 
+      setLoading(true); // Show loader
 
-    } else {
-      toast.error("Invalid Credentials")
+      try {
+        const profileRes = await fetch(`http://10.99.34.31:8085/email/${formValues.email}`);
+        // const profileRes = await fetch('https://jsonplaceholder.typicode.com/users');
+        const profileData = await profileRes.json();
+        updateUserData('profile', {...profileData,role:"user"});
+
+        const plansRes = await fetch(`http://10.99.34.31:8085/cust_health_plans/by-customer/${profileData.id}`);
+        // const plansRes = await fetch('https://jsonplaceholder.typicode.com/posts');
+        const plansData = await plansRes.json();
+        updateUserData('plans', plansData);
+
+        const planIds = plansData.map(plan => plan.plan_id).join(",");
+        const planDetailsRes = await fetch(`http://10.99.34.31:8085/health_plans/${planIds}`);
+        // const planDetailsRes = await fetch(`https://jsonplaceholder.typicode.com/albums`);
+        const planDetailsData = await planDetailsRes.json();
+        updateUserData('planDetails', planDetailsData);
+        navigate('/profile');
+        console.log(planDetailsData);
+      } catch (error) {
+        console.log(error)
+        toast.error("Invalid Credentials")
+      } finally {
+        setLoading(false); // Hide loader
+      }
+
+
+
+
     }
+
+    if (formValues.email === "admin@cigna.com") {
+      const user = userRoles.find(
+        (u) => u.email === formValues.email && u.password === formValues.password
+      );
+
+      if (user) {
+        await Promise.resolve().then(() => {
+          localStorage.setItem("userData", JSON.stringify({profile:{ ...user, password: "denied" }}))
+          setUser({ ...user, password: "denied" })
+        });
+        navigate("/profile")
+      } else {
+        toast.error("Invalid Credentials")
+      }
+    } else {
+        fetchUserData()
+    }
+
+
+    
+
+
+
+
+
   }
+
   return (
-    <Container fluid className="login-container p-0" style={{ width: "100%", height:"90vh" }}>
+    <Container fluid className="login-container p-0" style={{ width: "100%", height: "90vh" }}>
       <Row noGutters className="min-vh-100">
         {/* Left panel with background image, logo & quote */}
         <Col md="6" className="login-left d-flex flex-column justify-content-between">
@@ -91,7 +152,7 @@ const LoginScreen = () => {
               src={logoWhite}
               alt="Cigna"
               className="logo"
-             
+
             />
           </div>
 
@@ -153,8 +214,8 @@ const LoginScreen = () => {
               </Label>
             </FormGroup> */}
 
-              <Button color="primary" className="login-btn" type="submit">
-                Log in
+              <Button color="primary" className="login-btn" type="submit" disabled={loading}>
+                {loading ? <LoaderIcon className='spinner' /> : "Log in"}
               </Button>
             </Form>
 
