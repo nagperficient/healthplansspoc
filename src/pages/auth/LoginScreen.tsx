@@ -86,19 +86,19 @@ const LoginScreen = () => {
       setLoading(true); // Show loader
 
       try {
-        // const profileRes = await fetch(`http://10.99.34.31:8085/email/${formValues.email}`);
-        const profileRes = await fetch('https://jsonplaceholder.typicode.com/users');
+        const profileRes = await fetch(`http://10.99.34.31:8085/email/${formValues.email}`);
+        // const profileRes = await fetch('https://jsonplaceholder.typicode.com/users');
         const profileData = await profileRes.json();
-        updateUserData('profile', profileData);
+        updateUserData('profile', {...profileData,role:"user"});
 
-        // const plansRes = await fetch(`http://10.99.34.31:8085/cust_health_plans/by-customer/${profileData.id}`);
-        const plansRes = await fetch('https://jsonplaceholder.typicode.com/posts');
+        const plansRes = await fetch(`http://10.99.34.31:8085/cust_health_plans/by-customer/${profileData.id}`);
+        // const plansRes = await fetch('https://jsonplaceholder.typicode.com/posts');
         const plansData = await plansRes.json();
         updateUserData('plans', plansData);
 
         const planIds = plansData.map(plan => plan.plan_id).join(",");
-        // const planDetailsRes = await fetch(`http://10.99.34.31:8085/health_plans/${planIds}`);
-        const planDetailsRes = await fetch(`https://jsonplaceholder.typicode.com/albums`);
+        const planDetailsRes = await fetch(`http://10.99.34.31:8085/health_plans/${planIds}`);
+        // const planDetailsRes = await fetch(`https://jsonplaceholder.typicode.com/albums`);
         const planDetailsData = await planDetailsRes.json();
         updateUserData('planDetails', planDetailsData);
         navigate('/profile');
@@ -122,7 +122,7 @@ const LoginScreen = () => {
 
       if (user) {
         await Promise.resolve().then(() => {
-          localStorage.setItem("userData", JSON.stringify({ ...user, password: "denied" }))
+          localStorage.setItem("userData", JSON.stringify({profile:{ ...user, password: "denied" }}))
           setUser({ ...user, password: "denied" })
         });
         navigate("/profile")

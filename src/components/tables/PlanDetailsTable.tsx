@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'reactstrap';
 
 const fields = [
-  "_id",
+  "id",
   "plan_name",
   "plan_type",
   "provider",

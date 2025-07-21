@@ -4,13 +4,15 @@ import CoverageTabs from '../../components/tabs/CoverageTabs'
 import { Col, Container, Row } from 'reactstrap'
 import { StoreContext } from '../../hooks/contexts/GlobalContext'
 import { useParams } from 'react-router-dom'
+import { UserDataContext } from '../../hooks/contexts/UserContext'
 
 type Props = {}
 
 const CustomersHealthPlanSingle = (props: Props) => {
     const { id, name } = useParams();
-    const { healthplansData } = use(StoreContext) as any;
-        const selectedPlan = healthplansData?.find(val => +val._id === +id)
+    const {  healthplansData } = use(StoreContext) as any;
+    const selectedPlan = healthplansData?.find(val => +val.id === +id)
+    console.log(healthplansData,"healthplansData")
     return (
         <div>
             <Container>

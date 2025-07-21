@@ -2,13 +2,13 @@ import React, { Fragment, useState } from 'react';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert, Badge } from 'reactstrap';
 
 function AlertModal(props) {
-  const { toggle, customers, title, message } = props;
+  const { toggle, customers, title, message, isopen=true } = props;
 
 
   return (
     <div>
 
-      <Modal isOpen={true} toggle={toggle}>
+      <Modal isOpen={isopen} toggle={toggle}>
         <ModalHeader toggle={toggle} className="text-primary">{title}</ModalHeader>
         <ModalBody>
           <Alert>
@@ -23,7 +23,7 @@ function AlertModal(props) {
                     </Badge> of the plan: <Badge color="info">{val.plan_id}</Badge>
                   </p>
                   <hr />
-                  <p>{message}</p>
+                  <p>{JSON.stringify(message)}</p>
                   <p>Enrolled on <Badge color="success">{val.enrollment_date}</Badge></p>
                 </Fragment>
               )

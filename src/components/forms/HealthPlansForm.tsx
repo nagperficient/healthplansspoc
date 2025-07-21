@@ -33,14 +33,14 @@ const formData = [
 
 
 const HealthPlansForm = (props: any) => {
-    const {customerhealthplansData} = use(StoreContext);
+    const { customerhealthplansData, fetchData } = use(StoreContext);
     const navigate = useNavigate();
     // const { _id, plan_name, plan_type, provider, coverage_area, monthly_premium, deductible, coinsurance, copay_primary, copay_specialist, out_of_pocket_max, network_type, referral_required, includes_prescription, dental_coverage, vision_coverage, plan_url, plan_notes, effective_date } = props;
     const [formValues, setFormValues] = useState({}) as any
     const [showAlert, setShowAlert] = useState<JSX.Element[]>([]) as any;
     const [isLoading, setisLoading] = useState(false);
-    
-  
+
+
 
     const handlechange = (e: any, keyValue: string) => {
         setFormValues((prevValues: any) => ({
@@ -48,20 +48,54 @@ const HealthPlansForm = (props: any) => {
             [keyValue]: e.target.value
         }))
     }
-    const handleOnSubmit = () => {
+    const handleOnSubmit = async () => {
         setisLoading(true)
-        const customers = customerhealthplansData?.filter(val=> +val.plan_id === +props._id)
         console.log({
-            ...formValues,
-            id: props._id,
-            plan_type: props.plan_type,
-            provider: props.plan_provider,
-            plan_notes: formValues.plan_notes||props.plan_notes,
-            event_message: formValues.event_message||"",
-            customers
-        }, props._id);
-        setShowAlert([<AlertModal message={formValues.event_message} title="Alert" toggle={()=>{setShowAlert([]);props.toggle()}} customers={customers} />])
-        setisLoading(false)
+                    
+                    "fields":{...formValues},
+                    id: props.id,
+                    plan_name:props.plan_name,
+                    plan_type: props.plan_type,
+                    provider: props.provider,
+                    created_at: Date.now(),
+                    event_message: formValues.event_message || "",
+                    // customers
+                })
+        
+        const customers = customerhealthplansData?.filter(val => +val.plan_id === +props.id)
+        try {
+            const response = await fetch("http://10.99.34.31:8085/healthplans/publish", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    
+                    "fields":{...formValues},
+                    id: props.id,
+                    plan_name:props.plan_name,
+                    plan_type: props.plan_type,
+                    provider: props.provider,
+                    created_at: new Date(),                    
+                    event_message: formValues.event_message || "",
+                    // customers
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            
+            setShowAlert([<AlertModal message={formValues.event_message} title="Alert" toggle={() => { setShowAlert([]); props.toggle() }} customers={customers} />])
+            setisLoading(false)
+            fetchData()
+        } catch (error) {
+            console.error('Switch failed:', error);
+            throw error;
+        }
+
+ setisLoading(false)
     }
     return (
         <div><Form>
@@ -132,10 +166,10 @@ const HealthPlansForm = (props: any) => {
             </Row>
 
             <Button disabled={isLoading} onClick={handleOnSubmit} block className="my-4" color="primary">
-                {isLoading ?<LoaderIcon />:"Submit"}
+                {isLoading ? <LoaderIcon /> : "Submit"}
             </Button>
         </Form>
-        {showAlert && showAlert[0]}
+            {showAlert && showAlert[0]}
         </div>
     )
 }

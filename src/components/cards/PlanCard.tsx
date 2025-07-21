@@ -16,11 +16,12 @@ import { useNavigate } from 'react-router-dom';
 
 const PlanCard = (props) => {
   const plan = props
+  console.log(props,"sfddf")
   let navigate = useNavigate();
   return (
     <Card className="plan-card">
       {plan.userRole === "admin" && <div className="right-more-dots text-right">
-        <Button size='sm' color="link" onClick={() => plan.editPlan(plan._id)}>
+        <Button size='sm' color="link" onClick={() => plan.editPlan(plan?.id)}>
           <Pen size={12} />
         </Button>
       </div>}
@@ -48,7 +49,7 @@ const PlanCard = (props) => {
           <div className="premium-value">${plan?.monthly_premium.toFixed(2)}</div>
 
           <div className="premium-buttons mt-3">
-            <Button outline color="light" className="btn-sm btn-hover-primary" onClick={()=>navigate(`/customers/healthplan/${plan._id}/${plan.plan_name}`)}>
+            <Button outline color="light" className="btn-sm btn-hover-primary" onClick={()=>navigate(`/customers/healthplan/${plan.id}/${plan.plan_name}`)}>
               View details
             </Button>
             <Button color="light" className="btn-sm enroll-btn ms-2" onClick={plan.entrollPlan}>
