@@ -13,14 +13,11 @@ import './LoginScreen.css';
 import { logoWhite } from '../../utils/Images';
 import { toast } from 'react-toastify';
 import { StoreContext } from '../../hooks/contexts/GlobalContext';
-<<<<<<< HEAD
-
-=======
 import apiService from '../../api/apiService';
 import { LoaderIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserData } from '../../hooks/contexts/UserContext';
->>>>>>> 21d07dfad56fca5c8a4a508f298188fe8e2e4ea3
+
 const userRoles = [
   {
     first_name: 'Natashia',
@@ -38,35 +35,6 @@ const userRoles = [
     _id: 1
   },
   {
-<<<<<<< HEAD
-        firstName: 'Jekovich',
-        lastName: 'Remson',
-        dob: '12-10-1991',
-        email: 'user@cigna.com',
-        phone: '(+62) 821 2554-5846',
-        role: 'user',
-        password: "cigna@8",
-        country: 'United Kingdom',
-        city: 'Leeds, East London',
-        postalCode: 'ERT 1254',
-        location: 'Leeds, United Kingdom',
-        avatarUrl: '/path/to/avatar.jpg',
-        _id:3
-    },
-    {
-      _id: 3,
-      firstName: "Carol",
-      lastName: "Williams",
-      role:"user",
-      email: "carol.williams@email.com",
-      password: "cigna@8",
-      dob: "1978-11-02",
-      location: "789 Pine St, Los Angeles, CA",
-      country:'',
-      city:'',
-      postalCode:""
-}
-=======
     firstName: 'Jekovich',
     lastName: 'Remson',
     dob: '12-10-1991',
@@ -81,7 +49,6 @@ const userRoles = [
     avatarUrl: '/path/to/avatar.jpg',
     _id: 3
   }
->>>>>>> 21d07dfad56fca5c8a4a508f298188fe8e2e4ea3
 ]
 const LoginScreen = () => {
   const { updateUserData } = useUserData();
@@ -99,9 +66,6 @@ const LoginScreen = () => {
     }))
   }
 
-<<<<<<< HEAD
-  const handleSubmit = async (e:any) => {
-=======
   const handleSubmitUserData = (data, key) => {
     setCusData(prevData => ({
       ...prevData,
@@ -110,7 +74,6 @@ const LoginScreen = () => {
   }
 
   const handleSubmit = async (e) => {
->>>>>>> 21d07dfad56fca5c8a4a508f298188fe8e2e4ea3
     e.preventDefault();
 
     // const data = await apiService.get(`/email/${formValues.email}`)
@@ -118,13 +81,6 @@ const LoginScreen = () => {
     // data.then(val=> console.log(val.data))
     // console.log(data,"user profiled data")
 
-<<<<<<< HEAD
-    if (user) {
-      await Promise.resolve().then(() => {
-        localStorage.setItem("userData", JSON.stringify({...user,password:"denied"}))
-        setUser({...user,password:"denied"})
-      });
-=======
     const fetchUserData = async () => {
 
 
@@ -154,10 +110,6 @@ const LoginScreen = () => {
       } finally {
         setLoading(false); // Hide loader
       }
->>>>>>> 21d07dfad56fca5c8a4a508f298188fe8e2e4ea3
-
-
-
 
     }
 
@@ -178,13 +130,6 @@ const LoginScreen = () => {
     } else {
         fetchUserData()
     }
-
-
-    
-
-
-
-
 
   }
 
