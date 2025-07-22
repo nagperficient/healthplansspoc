@@ -6,10 +6,6 @@ import { DropdownItem } from 'reactstrap';
 import { StoreContext } from '../../hooks/contexts/GlobalContext';
 import { UserDataContext } from '../../hooks/contexts/UserContext';
 
-<<<<<<< HEAD
-// Connect to your backend WebSocket server
-const socket = io('http://10.99.34.105:8080'); // Replace with your actual backend URL
-=======
 // adjust the URL if your backend is elsewhere
 // const socket = io('http://10.99.34.198:9092'); 
 
@@ -50,7 +46,6 @@ const renderObjectAsList = (obj) => {
     // }
   });
 };
->>>>>>> 21d07dfad56fca5c8a4a508f298188fe8e2e4ea3
 
 export default function EventsNotification() {
   const user = JSON.parse(localStorage.getItem("userData")||"{}")?.profile as any
