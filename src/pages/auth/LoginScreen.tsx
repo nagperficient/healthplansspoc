@@ -17,6 +17,7 @@ import apiService from '../../api/apiService';
 import { LoaderIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserData } from '../../hooks/contexts/UserContext';
+import { BASEURL } from '../../api/axiosInstance';
 const userRoles = [
   {
     first_name: 'Natashia',
@@ -86,7 +87,7 @@ const LoginScreen = () => {
       setLoading(true); // Show loader
 
       try {
-        const profileRes = await fetch(`http://10.99.34.31:8085/email/${formValues.email}`);
+        const profileRes = await fetch(`${BASEURL}/email/${formValues.email}`);
         // const profileRes = await fetch('https://jsonplaceholder.typicode.com/users');
         const profileData = await profileRes.json();
         updateUserData('profile', {...profileData,role:"user"});

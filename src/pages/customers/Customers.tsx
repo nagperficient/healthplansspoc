@@ -81,7 +81,7 @@ function Customers() {
     <div className="container mt-4">
       <h4 className="my-4">Customers</h4>
       <Row>
-        {customersdata.map((customer) => (
+        {((customersData && customersData.length > 0) ? customersData:customersdata)?.map((customer) => (
           <Col sm="12" md="6" lg="4" className="mb-4" key={customer._id} style={{position:"relative",overflow:"hidden"}}>
             <Card style={{ width: '100%' }} className="customer-card p-0 ">
               <img

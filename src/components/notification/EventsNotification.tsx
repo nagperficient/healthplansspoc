@@ -15,14 +15,14 @@ const renderObjectAsList = (obj) => {
       return (
         <Fragment key={key}>
           {/* {JSON.stringify(value)} */}
-        {key === "benefit_event_data" && <li className='text-success' style={{wordBreak:"break-word", whiteSpace:"normal"}}>
-          {/* <strong>{key}:</strong> */}
-          
-          {value.event_message}
-        </li>}
+          {key === "benefit_event_data" && <li className='text-success' style={{ wordBreak: "break-word", whiteSpace: "normal" }}>
+            {/* <strong>{key}:</strong> */}
+
+            {value.event_message}
+          </li>}
         </Fragment>
       );
-    } 
+    }
     // else if (Array.isArray(value)) {
     //   return (
     //     <li key={key}>
@@ -48,7 +48,7 @@ const renderObjectAsList = (obj) => {
 };
 
 export default function EventsNotification() {
-  const user = JSON.parse(localStorage.getItem("userData")||"{}")?.profile as any
+  const user = JSON.parse(localStorage.getItem("userData") || "{}")?.profile as any
   const { eventMessages } = use(StoreContext)
   const { plans } = use(UserDataContext)
   const [messages, setMessages] = useState([
@@ -84,9 +84,9 @@ export default function EventsNotification() {
   }, []);
 
   const filteredEvents = eventMessages && eventMessages?.filter(
-    (event) =>plans?.includes(event.customer_health_plan?.plan_id)
+    (event) => plans?.includes(event.customer_health_plan?.plan_id)
   );
-  console.log("filteredEvents",eventMessages)
+  console.log("filteredEvents", eventMessages)
   // const FilteredEventList = ({ events }) => {
 
 
@@ -104,8 +104,8 @@ export default function EventsNotification() {
 
   return (<div>
 
-    {user?.role=="user"?filteredEvents:eventMessages?.map((note, index) => (
-      <DropdownItem key={note.id} style={{position:"relative"}}>
+    {user?.role == "user" ? filteredEvents : eventMessages?.map((note, index) => (
+      <DropdownItem key={note.id} style={{ position: "relative" }}>
         {/* <div>
           <span className='text-success'>{note.message}</span>
           <div className="text-info small">{note.time}</div>
@@ -114,13 +114,13 @@ export default function EventsNotification() {
 
         {/* </div> */}
         <ul style={{
-        position: 'relative',
-        borderRadius: '5px',
-        padding: '10px 15px',
-        display: 'block',
-        maxWidth: '100%',
-        paddingRight:"20px",
-      }}>
+          position: 'relative',
+          borderRadius: '5px',
+          padding: '10px 15px',
+          display: 'block',
+          maxWidth: '100%',
+          paddingRight: "20px",
+        }}>
           {renderObjectAsList(note)}
         </ul>
         <DropdownItem divider />

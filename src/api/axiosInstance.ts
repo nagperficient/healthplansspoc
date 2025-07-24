@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASEURL  = "http://10.99.34.198:8081";
+export const BASEURL  = "http://10.99.34.31:8085";
 
 const axiosInstance = axios.create({
   baseURL: BASEURL,
