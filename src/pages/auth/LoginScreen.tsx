@@ -92,13 +92,13 @@ const LoginScreen = () => {
         const profileData = await profileRes.json();
         updateUserData('profile', {...profileData,role:"user"});
 
-        const plansRes = await fetch(`http://10.99.34.31:8085/cust_health_plans/by-customer/${profileData.id}`);
+        const plansRes = await fetch(`${BASEURL}/cust_health_plans/by-customer/${profileData.id}`);
         // const plansRes = await fetch('https://jsonplaceholder.typicode.com/posts');
         const plansData = await plansRes.json();
         updateUserData('plans', plansData);
 
         const planIds = plansData.map(plan => plan.plan_id).join(",");
-        const planDetailsRes = await fetch(`http://10.99.34.31:8085/health_plans/${planIds}`);
+        const planDetailsRes = await fetch(`${BASEURL}/health_plans/${planIds}`);
         // const planDetailsRes = await fetch(`https://jsonplaceholder.typicode.com/albums`);
         const planDetailsData = await planDetailsRes.json();
         updateUserData('planDetails', planDetailsData);
