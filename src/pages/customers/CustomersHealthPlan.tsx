@@ -25,7 +25,7 @@ import { UserDataContext } from '../../hooks/contexts/UserContext';
 
 //healthplans
 
-const healthplansdatas = [
+const healthplansData = [
   {
     "_id": 151,
     "plan_name": "Cigna PPO Essential",

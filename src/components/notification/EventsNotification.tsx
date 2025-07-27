@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { DropdownItem } from 'reactstrap';
 import { StoreContext } from '../../hooks/contexts/GlobalContext';
 import { UserDataContext } from '../../hooks/contexts/UserContext';
+import axios from 'axios';
 
 // adjust the URL if your backend is elsewhere
 // const socket = io('http://10.99.34.198:9092'); 
@@ -86,7 +87,7 @@ export default function EventsNotification() {
   const filteredEvents = eventMessages && eventMessages?.filter(
     (event) => plans?.includes(event.customer_health_plan?.plan_id)
   );
-  console.log("filteredEvents", eventMessages)
+  console.log("filteredEvents -- @89 ", eventMessages)
   // const FilteredEventList = ({ events }) => {
 
 

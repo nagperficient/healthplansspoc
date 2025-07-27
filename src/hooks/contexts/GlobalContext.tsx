@@ -2,73 +2,80 @@ import { createContext, useEffect, useState } from "react";
 import { customerHealthPlan } from "../../utils/data/customerHealthPlan"
 import { customers } from "../../utils/data/customers"
 import { healthPlans } from "../../utils/data/healthPlans"
-import axiosInstance from "../../api/axiosInstance";
+import axiosInstance, { BASEURL } from "../../api/axiosInstance";
 
+const notificationsDummyData = [
+    { id: 1, customer_name: 'Alice', plan_id: '151', message: 'New user registered', is_read: false },
+    { id: 2, customer_name: 'Bob', plan_id: '152', message: 'Plan upgraded', is_read: true },
+    { id: 3, customer_name: 'Charlie', plan_id: '153', message: 'Payment received', is_read: false },
+    { id: 4, customer_name: 'Diana', plan_id: '154', message: 'Subscription cancelled', is_read: true },
+    { id: 5, customer_name: 'Ethan', plan_id: '155', message: 'Trial period started', is_read: false },
+    { id: 6, customer_name: 'Fiona', plan_id: '156', message: 'Email verified', is_read: true },
+    { id: 7, customer_name: 'George', plan_id: '157', message: 'Password changed', is_read: false },
+    { id: 8, customer_name: 'Hannah', plan_id: '158', message: 'Account suspended', is_read: true },
+    { id: 9, customer_name: 'Ian', plan_id: '159', message: 'New device login', is_read: false },
+    { id: 10, customer_name: 'Julia', plan_id: '160', message: 'Feedback submitted', is_read: true },
+    { id: 11, customer_name: 'Kevin', plan_id: '161', message: 'Billing info updated', is_read: false },
+    { id: 12, customer_name: 'Laura', plan_id: '162', message: 'Support ticket opened', is_read: true },
+    { id: 13, customer_name: 'Mike', plan_id: '163', message: 'Referral bonus credited', is_read: false },
+    { id: 14, customer_name: 'Nina', plan_id: '164', message: 'Account reactivated', is_read: true },
+    { id: 15, customer_name: 'Oscar', plan_id: '165', message: 'Two-factor enabled', is_read: false }
+]
 export const StoreContext = createContext({});
 
 export const StoreProvider = ({ children }) => {
     const [loggedinUser, setLoggedinUser] = useState({});
-    const [customersData, setCustomersData] = useState([])
-    const [healthplansData, setHealthplansData] = useState([])
-    const [customerhealthplansData, setCustomerhealthplansData] = useState([])
+    const [customersData, setCustomersData] = useState([]);
+    const [healthplansData, setHealthplansData] = useState([]);
+    const [customerhealthplansData, setCustomerhealthplansData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [metadata, setMetadata] = useState({});
+    const [unreadMessages, setUnreadMessagesData] = useState([] || notificationsDummyData);
 
-    const [eventMessages, setEventMessagesin] = useState([
-        // {
-        //     "event_type": "update",
-        //     "benefit_event_id": {
-        //         "$oid": "6878917b80624116cd005593"
-        //     },
-        //     "changed_fields": {
-        //         "provider": "traCigna"
-        //     },
-        //     "benefit_event_data": {
-        //         "_id": {
-        //             "$oid": "6878917b80624116cd005593"
-        //         },
-        //         "id": 153,
-        //         "plan_name": "Cigna PPO Select",
-        //         "plan_type": "PPO",
-        //         "provider": "traCigna",
-        //         "fields": {
-        //             "includes_prescription": true,
-        //             "dental_coverage": true,
-        //             "vision_coverage": true,
-        //             "deductible": 1000
-        //         },
-        //         "event_message": "Dental & Vision coverage is enabled !!"
-        //     },
-        //     "customer_health_plan": {
-        //         "_id": 2,
-        //         "customer_id": 2,
-        //         "plan_id": 153,
-        //         "enrollment_date": "2025-01-15",
-        //         "status": "active"
-        //     },
-        //     "associated_customers": [
-        //         {
-        //             "customer_id": 2,
-        //             "customer_data": {
-        //                 "id": 2,
-        //                 "first_name": "Bob",
-        //                 "last_name": "Johnson",
-        //                 "email": "bob.johnson@email.com",
-        //                 "date_of_birth": "1990-07-22",
-        //                 "address": "456 Oak St, Miami, FL"
-        //             }
-        //         }
-        //     ]
-        // }
-    ]) as any
+    const [eventMessages, setEventMessagesin] = useState([]) as any
     const setUser = (data) => {
         setLoggedinUser(data)
     }
     const setEventMessages = (data) => {
         setEventMessagesin((prevData) => [...prevData, data])
     }
+    const handleUnreadMessages = (data) => {
+        setUnreadMessagesData((prevData) => [...prevData, data])
+    }
+    const fetchAllNotifications = async () => {
+        try {
+            // Backend API call
+            const unreadNotifications = await fetch(`${BASEURL}/api/notifications/unread`, {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            });
+            handleUnreadMessages(unreadNotifications);
+        } catch (err) {
+            console.error('Failed to mark notification as read:', err);
+        }
+    };
+    const markAsRead = async (id: string) => {
+        try {
+            if(!id) return;
 
+            // Backend API call
+            await fetch(`${BASEURL}/api/notifications/${id}/read`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                // body: JSON.stringify({ id: id })
+            });
+            // Optimistically update UI
+            setUnreadMessagesData((prev: any) =>
+                prev.map((msg: any) =>
+                    msg.id === id ? { ...msg, is_read: !msg.is_read } : msg
+                )
+            );
+
+        } catch (err) {
+            console.error('Failed to mark notification as read:', err);
+        }
+    };
     const fetchData = async () => {
         const fetchAllData = async () => {
             setLoading(true);
@@ -111,7 +118,8 @@ export const StoreProvider = ({ children }) => {
     }
 
     useEffect(() => {
-        fetchData()
+        fetchData();
+        fetchAllNotifications();
     }, []);
 
     const handleContextSubmit = (data: any, key: number) => {
@@ -128,7 +136,7 @@ export const StoreProvider = ({ children }) => {
     return (<StoreContext.Provider value={{
         customersData,
         healthplansData, customerhealthplansData, loggedinUser, setUser, setEventMessages,
-        eventMessages,fetchData
+        eventMessages, fetchData, unreadMessages, markAsRead
     }}>
         {children}
     </StoreContext.Provider>);
