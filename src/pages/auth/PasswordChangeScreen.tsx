@@ -30,7 +30,8 @@ const PasswordChangeScreen = () => {
   const [formData, setFormData] = useState({
     email: '',
     otp: '',
-    validate_time: ''
+    validate_time: '',
+    password:'',
   });
 
   const handleChange = (e) => {
@@ -73,7 +74,7 @@ const PasswordChangeScreen = () => {
       setShowAlert(prevData => ({
         ...prevData,
         msg: "Something went wrong.",
-        variant: "danger",
+        variant: "primary", // need to change later to danger
         show: true
       }))
       setLoading(false)
@@ -211,7 +212,7 @@ const PasswordChangeScreen = () => {
 
 
               <Button color="primary" className="login-btn" type="submit" disabled={loading}>
-                {loading ? <LoaderIcon className='spinner' /> : "Reset"}
+                {loading ? <LoaderIcon className='spinner' /> : "Validate otp"}
               </Button>
             </Form> :
               <Form onSubmit={handleSubmitSetPassword}>
@@ -229,13 +230,13 @@ const PasswordChangeScreen = () => {
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="otp">OTP</Label>
+                  <Label for="password">Password</Label>
                   <Input
                     type="text"
-                    name="otp"
-                    id="otp"
-                    placeholder="Enter OTP"
-                    value={formData.otp}
+                    name="password"
+                    id="password"
+                    placeholder="Enter password"
+                    value={formData.password}
                     onChange={handleChange}
                     required
                   />
