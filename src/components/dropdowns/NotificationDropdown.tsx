@@ -21,7 +21,7 @@ const NotificationDropdown = () => {
 
   // Effect to update the unreadCount when unreadMessages change
   useEffect(() => {
-    setUnreadCount(unreadMessages?.filter(note => note.is_read === false).length || 0);
+    setUnreadCount(unreadMessages?.filter(note => note.isRead === false).length || 0);
   }, [unreadMessages]); 
 
 

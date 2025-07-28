@@ -7,7 +7,7 @@ import { UserDataContext } from '../../hooks/contexts/UserContext';
 export default function MessagesNotification({ onMarkAsRead }) {
   const { unreadMessages } = use(StoreContext);
   const [currentId, setCurrentId] = useState(null);
-
+console.log(unreadMessages,"unread")
   // Function to mark a message as read
   const markAsRead = (id) => {
     console.log(id);
@@ -25,7 +25,7 @@ export default function MessagesNotification({ onMarkAsRead }) {
   return (
     <div>
       {unreadMessages
-        ?.filter(note => note.is_read === false) // Only show unread messages
+        ?.filter(note => note.isRead === false) // Only show unread messages
         .map((note) => (
           <DropdownItem
             key={note.id}
