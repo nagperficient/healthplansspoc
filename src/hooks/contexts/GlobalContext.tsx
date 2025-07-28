@@ -5,21 +5,21 @@ import { healthPlans } from "../../utils/data/healthPlans"
 import axiosInstance, { BASEURL } from "../../api/axiosInstance";
 
 const notificationsDummyData = [
-    { id: 1, customer_name: 'Alice', plan_id: '151', message: 'New user registered', is_read: false },
-    { id: 2, customer_name: 'Bob', plan_id: '152', message: 'Plan upgraded', is_read: true },
-    { id: 3, customer_name: 'Charlie', plan_id: '153', message: 'Payment received', is_read: false },
-    { id: 4, customer_name: 'Diana', plan_id: '154', message: 'Subscription cancelled', is_read: true },
-    { id: 5, customer_name: 'Ethan', plan_id: '155', message: 'Trial period started', is_read: false },
-    { id: 6, customer_name: 'Fiona', plan_id: '156', message: 'Email verified', is_read: true },
-    { id: 7, customer_name: 'George', plan_id: '157', message: 'Password changed', is_read: false },
-    { id: 8, customer_name: 'Hannah', plan_id: '158', message: 'Account suspended', is_read: true },
-    { id: 9, customer_name: 'Ian', plan_id: '159', message: 'New device login', is_read: false },
-    { id: 10, customer_name: 'Julia', plan_id: '160', message: 'Feedback submitted', is_read: true },
-    { id: 11, customer_name: 'Kevin', plan_id: '161', message: 'Billing info updated', is_read: false },
-    { id: 12, customer_name: 'Laura', plan_id: '162', message: 'Support ticket opened', is_read: true },
-    { id: 13, customer_name: 'Mike', plan_id: '163', message: 'Referral bonus credited', is_read: false },
-    { id: 14, customer_name: 'Nina', plan_id: '164', message: 'Account reactivated', is_read: true },
-    { id: 15, customer_name: 'Oscar', plan_id: '165', message: 'Two-factor enabled', is_read: false }
+    { id: 1, customerName: 'Alice', planId: '151', message: 'New user registered', isRead: false },
+    { id: 2, customerName: 'Bob', planId: '152', message: 'Plan upgraded', isRead: true },
+    { id: 3, customerName: 'Charlie', planId: '153', message: 'Payment received', isRead: false },
+    { id: 4, customerName: 'Diana', planId: '154', message: 'Subscription cancelled', isRead: true },
+    { id: 5, customerName: 'Ethan', planId: '155', message: 'Trial period started', isRead: false },
+    { id: 6, customerName: 'Fiona', planId: '156', message: 'Email verified', isRead: true },
+    { id: 7, customerName: 'George', planId: '157', message: 'Password changed', isRead: false },
+    { id: 8, customerName: 'Hannah', planId: '158', message: 'Account suspended', isRead: true },
+    { id: 9, customerName: 'Ian', planId: '159', message: 'New device login', isRead: false },
+    { id: 10, customerName: 'Julia', planId: '160', message: 'Feedback submitted', isRead: true },
+    { id: 11, customerName: 'Kevin', planId: '161', message: 'Billing info updated', isRead: false },
+    { id: 12, customerName: 'Laura', planId: '162', message: 'Support ticket opened', isRead: true },
+    { id: 13, customerName: 'Mike', planId: '163', message: 'Referral bonus credited', isRead: false },
+    { id: 14, customerName: 'Nina', planId: '164', message: 'Account reactivated', isRead: true },
+    { id: 15, customerName: 'Oscar', planId: '165', message: 'Two-factor enabled', isRead: false }
 ]
 export const StoreContext = createContext({});
 
@@ -31,17 +31,17 @@ export const StoreProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [metadata, setMetadata] = useState({});
-    const [unreadMessages, setUnreadMessagesData] = useState(notificationsDummyData);
+    const [unreadMessages, setUnreadmessagesData] = useState(notificationsDummyData);
 
-    const [eventMessages, setEventMessagesin] = useState([]) as any
+    const [eventmessages, setEventmessagesin] = useState([]) as any
     const setUser = (data) => {
         setLoggedinUser(data)
     }
-    const setEventMessages = (data) => {
-        setEventMessagesin((prevData) => [...prevData, data])
+    const setEventmessages = (data) => {
+        setEventmessagesin((prevData) => [...prevData, data])
     }
-    const handleUnreadMessages = (data) => {
-        setUnreadMessagesData((prevData) => [...prevData, data])
+    const handleUnreadmessages = (data) => {
+        setUnreadmessagesData((prevData) => [...prevData, data])
     }
     const fetchAllNotifications = async () => {
         try {
@@ -50,15 +50,15 @@ export const StoreProvider = ({ children }) => {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
             });
-            handleUnreadMessages(unreadNotifications);
+            handleUnreadmessages(unreadNotifications);
         } catch (err) {
             console.error('Failed to mark notification as read:', err);
         }
     };
     const markAsRead = async (id: string) => {
-        setUnreadMessagesData((prev: any) =>
+        setUnreadmessagesData((prev: any) =>
                     prev.map((msg: any) =>
-                    msg.id === id ? { ...msg, is_read: !msg.is_read } : msg
+                    msg.id === id ? { ...msg, isRead: !msg.isRead } : msg
                 )
             );
 
@@ -74,9 +74,9 @@ export const StoreProvider = ({ children }) => {
 
         //     console.log("unread messages");
         //     // Optimistically update UI
-        //     setUnreadMessagesData((prev: any) =>
+        //     setUnreadmessagesData((prev: any) =>
         //         prev.map((msg: any) =>
-        //             msg.id === id ? { ...msg, is_read: !msg.is_read } : msg
+        //             msg.id === id ? { ...msg, isRead: !msg.isRead } : msg
         //         )
         //     );
 
@@ -144,8 +144,8 @@ export const StoreProvider = ({ children }) => {
 
     return (<StoreContext.Provider value={{
         customersData,
-        healthplansData, customerhealthplansData, loggedinUser, setUser, setEventMessages,
-        eventMessages, fetchData, unreadMessages, markAsRead
+        healthplansData, customerhealthplansData, loggedinUser, setUser, setEventmessages,
+        eventmessages, fetchData, unreadMessages, markAsRead
     }}>
         {children}
     </StoreContext.Provider>);
