@@ -31,7 +31,7 @@ export const StoreProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [metadata, setMetadata] = useState({});
-    const [unreadMessages, setUnreadMessagesData] = useState([] || notificationsDummyData);
+    const [unreadMessages, setUnreadMessagesData] = useState(notificationsDummyData);
 
     const [eventMessages, setEventMessagesin] = useState([]) as any
     const setUser = (data) => {
@@ -56,26 +56,35 @@ export const StoreProvider = ({ children }) => {
         }
     };
     const markAsRead = async (id: string) => {
-        try {
-            if(!id) return;
-
-            // Backend API call
-            await fetch(`${BASEURL}/api/notifications/${id}/read`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                // body: JSON.stringify({ id: id })
-            });
-            // Optimistically update UI
-            setUnreadMessagesData((prev: any) =>
-                prev.map((msg: any) =>
+        setUnreadMessagesData((prev: any) =>
+                    prev.map((msg: any) =>
                     msg.id === id ? { ...msg, is_read: !msg.is_read } : msg
                 )
             );
 
-        } catch (err) {
-            console.error('Failed to mark notification as read:', err);
-        }
+        // try {
+        //     if (!id) return;
+
+        //     // Backend API call
+        //     const unread =  await fetch(`${BASEURL}/api/notifications/${id}/read`, {
+        //         method: 'PUT',
+        //         headers: { 'Content-Type': 'application/json' },
+        //         // body: JSON.stringify({ id: id })
+        //     });
+
+        //     console.log("unread messages");
+        //     // Optimistically update UI
+        //     setUnreadMessagesData((prev: any) =>
+        //         prev.map((msg: any) =>
+        //             msg.id === id ? { ...msg, is_read: !msg.is_read } : msg
+        //         )
+        //     );
+
+        // } catch (err) {
+        //     console.error('Failed to mark notification as read:', err);
+        // }
     };
+    
     const fetchData = async () => {
         const fetchAllData = async () => {
             setLoading(true);

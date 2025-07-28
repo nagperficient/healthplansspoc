@@ -1,4 +1,4 @@
-import React, { use, useState } from 'react';
+import React, { use, useState, useEffect } from 'react';
 import {
   Dropdown,
   DropdownToggle,
@@ -6,36 +6,41 @@ import {
   DropdownItem,
   Badge
 } from 'reactstrap';
-import { Bell, User } from 'lucide-react'; // Optional: Lucide icon
-import "./NotificationDropdown.css"
-import EventsNotification from '../notification/EventsNotification';
+import { Bell } from 'lucide-react'; // Lucide icon
+import './NotificationDropdown.css';
+import MessagesNotification from '../notification/MessagesNotification';
 import { StoreContext } from '../../hooks/contexts/GlobalContext';
 import { UserDataContext } from '../../hooks/contexts/UserContext';
-import MessagesNotification from '../notification/MessagesNotification';
 
 const NotificationDropdown = () => {
-  const {unreadMessages} = use(StoreContext);
-  const {plans,profile} = use(UserDataContext);
+  const { unreadMessages, markAsRead } = use(StoreContext); // Access unreadMessages and markAsRead
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0); // Local state for unread message count
 
   const toggle = () => setDropdownOpen(prevState => !prevState);
 
+  // Effect to update the unreadCount when unreadMessages change
+  useEffect(() => {
+    setUnreadCount(unreadMessages?.filter(note => note.is_read === false).length || 0);
+  }, [unreadMessages]); 
 
+
+  const handleMarkAsRead = (id) => {
+    markAsRead(id); 
+    setUnreadCount(prevCount => prevCount - 1); 
+  };
 
   return (
     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-      <DropdownToggle caret={false} color="light" className='nav-link btn btn-info'>
+      <DropdownToggle caret={false} color="light" className="nav-link btn btn-info">
         <Bell size={20} />
         <Badge color="danger" pill className="me-1">
-          {unreadMessages.length||0}
+          {unreadCount}
         </Badge>
       </DropdownToggle>
       <DropdownMenu className="notification-dropdown-menu shadow-lg">
         <DropdownItem header>Notifications</DropdownItem>
-        <MessagesNotification />
-        
-        {/* <DropdownItem divider />
-        <DropdownItem>View All</DropdownItem> */}
+        <MessagesNotification onMarkAsRead={handleMarkAsRead} />
       </DropdownMenu>
     </Dropdown>
   );
