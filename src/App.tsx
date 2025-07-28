@@ -10,6 +10,7 @@ import { ToastContainer } from 'react-toastify';
 import CustomersHealthPlanSingle from "./pages/customers/CustomersHealthPlanSingle";
 import AuthLayout from "./pages/layouts/AuthLayout";
 import ProfileScreen from "./pages/profile/ProfileScreen";
+import PasswordChangeScreen from "./pages/auth/PasswordChangeScreen";
 
 function App() {
 
@@ -62,6 +63,7 @@ function App() {
           </Route>
           <Route path="/" element={<AuthLayout />}>
             <Route path="/login" element={<LoginScreen />} />
+            <Route path="/reset" element={<PasswordChangeScreen />} />
             
           </Route>
 

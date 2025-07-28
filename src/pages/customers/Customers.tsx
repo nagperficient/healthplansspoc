@@ -13,6 +13,8 @@ import { StoreContext } from '../../hooks/contexts/GlobalContext';
 import "./Customers.css"
 import { user1, user2, user3, user4, user5, user6 } from '../../utils/Images';
 import useAuth from '../../hooks/useAuth';
+import AddMemberForm from '../../components/forms/AddMemberForm';
+import AddMemberModal from '../../components/modalPopups/AddMemberModal';
 const customersdata = [
   {
     "_id": 1,
@@ -61,6 +63,7 @@ function Customers() {
   const {isAuthenticated, isLoading} = useAuth();
   const [modal, setModal] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [showAddMemberForm, setShowAddMemberForm] = useState(false);
   
   const toggleModal = () => setModal(!modal);
 
@@ -76,10 +79,16 @@ function Customers() {
   } else if(!isAuthenticated) {
     window.location.href="/login"
   }
+  const handleAddMember = () => {
+    setShowAddMemberForm(!showAddMemberForm)
+  }
  
   return (
     <div className="container mt-4">
-      <h4 className="my-4">Customers</h4>
+      <div className="d-flex align-items-center justify-content-between w-full">
+      <h4 className="my-4">Customers</h4> 
+        <Button color="primary" className="my-4" onClick={handleAddMember}>Add member</Button>
+      </div>
       <Row>
         {((customersData && customersData.length > 0) ? customersData:customersdata)?.map((customer) => (
           <Col sm="12" md="6" lg="4" className="mb-4" key={customer._id} style={{position:"relative",overflow:"hidden"}}>
@@ -110,7 +119,7 @@ function Customers() {
           </Col>
         ))}
       </Row>
-    
+    {showAddMemberForm && <AddMemberModal title="Add member" isopen={showAddMemberForm} toggle={()=>setShowAddMemberForm(!showAddMemberForm)} />}
     </div>
   );
 }
