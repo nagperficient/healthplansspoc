@@ -74,7 +74,7 @@ const PasswordChangeScreen = () => {
       setShowAlert(prevData => ({
         ...prevData,
         msg: "Something went wrong.",
-        variant: "primary", // need to change later to danger
+        variant: "danger", // need to change later to danger
         show: true
       }))
       setLoading(false)

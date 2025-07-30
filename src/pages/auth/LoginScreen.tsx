@@ -18,6 +18,7 @@ import { LoaderIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useUserData } from '../../hooks/contexts/UserContext';
 import { BASEURL } from '../../api/axiosInstance';
+import { USER_PATHS } from '../../utils/constants/apiPaths';
 const userRoles = [
   {
     first_name: 'Natashia',
@@ -87,18 +88,27 @@ const LoginScreen = () => {
       setLoading(true); // Show loader
 
       try {
-        const profileRes = await fetch(`${BASEURL}/email/${formValues.email}`);
+        const profileRes = await fetch(`${USER_PATHS.login}`, {
+          method: 'POST', // Specify the request method
+          headers: {
+            'Content-Type': 'application/json' // Set the content type to JSON
+          },
+          body: JSON.stringify({
+            email: formValues.email,
+            password: formValues.password,
+          }) // Convert the JavaScript object to a JSON string
+        });
         // const profileRes = await fetch('https://jsonplaceholder.typicode.com/users');
         const profileData = await profileRes.json();
-        updateUserData('profile', {...profileData,role:"user"});
+        updateUserData('profile', { ...profileData, role: "user" });
 
-        const plansRes = await fetch(`${BASEURL}/cust_health_plans/by-customer/${profileData.id}`);
+        const plansRes = await fetch(`${USER_PATHS.customer_health_plans}/${profileData.id}`);
         // const plansRes = await fetch('https://jsonplaceholder.typicode.com/posts');
         const plansData = await plansRes.json();
         updateUserData('plans', plansData);
 
         const planIds = plansData.map(plan => plan.plan_id).join(",");
-        const planDetailsRes = await fetch(`${BASEURL}/health_plans/${planIds}`);
+        const planDetailsRes = await fetch(`${USER_PATHS.health_plans}/health_plans/${planIds}`);
         // const planDetailsRes = await fetch(`https://jsonplaceholder.typicode.com/albums`);
         const planDetailsData = await planDetailsRes.json();
         updateUserData('planDetails', planDetailsData);
@@ -123,7 +133,7 @@ const LoginScreen = () => {
 
       if (user) {
         await Promise.resolve().then(() => {
-          localStorage.setItem("userData", JSON.stringify({profile:{ ...user, password: "denied" }}))
+          localStorage.setItem("userData", JSON.stringify({ profile: { ...user, password: "denied" } }))
           setUser({ ...user, password: "denied" })
         });
         navigate("/profile")
@@ -131,11 +141,11 @@ const LoginScreen = () => {
         toast.error("Invalid Credentials")
       }
     } else {
-        fetchUserData()
+      fetchUserData()
     }
 
 
-    
+
 
 
 

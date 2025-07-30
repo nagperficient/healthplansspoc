@@ -39,7 +39,7 @@ const NotificationDropdown = () => {
         </Badge>
       </DropdownToggle>
       <DropdownMenu className="notification-dropdown-menu shadow-lg">
-        <DropdownItem header>Notifications</DropdownItem>
+        <DropdownItem header className="notification-item">Notifications</DropdownItem>
         <MessagesNotification onMarkAsRead={handleMarkAsRead} />
       </DropdownMenu>
     </Dropdown>

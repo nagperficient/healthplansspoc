@@ -4,6 +4,7 @@ import { StoreContext } from '../../hooks/contexts/GlobalContext';
 import AlertModal from '../modalPopups/AlertModal';
 import { useNavigate } from 'react-router-dom';
 import { LoaderIcon } from 'lucide-react';
+import { BASEURL } from '../../api/axiosInstance';
 
 type Props = {}
 const enabled = ["plan_name", "effective_date", "plan_type", "coverage_area", "coinsurance", "plan_url", "provider"]
@@ -64,7 +65,7 @@ const HealthPlansForm = (props: any) => {
         
         const customers = customerhealthplansData?.filter(val => +val.plan_id === +props.id)
         try {
-            const response = await fetch("http://10.99.34.31:8085/healthplans/publish", {
+            const response = await fetch(`${BASEURL}/healthplans/publish`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

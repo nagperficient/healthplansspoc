@@ -6,3 +6,8 @@
     max-width: 300px;
     overflow-wrap: break-word;
 }
+
+.notification-item {
+  text-align: center;  /* Center the text inside the item */
+}
+

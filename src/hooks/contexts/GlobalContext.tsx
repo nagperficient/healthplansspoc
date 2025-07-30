@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { customerHealthPlan } from "../../utils/data/customerHealthPlan"
 import { customers } from "../../utils/data/customers"
 import { healthPlans } from "../../utils/data/healthPlans"
-import axiosInstance, { BASEURL } from "../../api/axiosInstance";
+import axiosInstance, { BASEURL, BASEURL2 } from "../../api/axiosInstance";
 
 const notificationsDummyData = [
     { id: 1, customerName: 'Alice', planId: '151', message: 'New user registered', isRead: false },
@@ -46,7 +46,7 @@ export const StoreProvider = ({ children }) => {
     const fetchAllNotifications = async () => {
         try {
             // Backend API call
-            const unreadNotifications = await fetch(`${BASEURL}/api/notifications/unread`, {
+            const unreadNotifications = await fetch(`${BASEURL2}/api/notifications/unread`, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -56,49 +56,49 @@ export const StoreProvider = ({ children }) => {
         }
     };
     const markAsRead = async (id: string) => {
-        setUnreadmessagesData((prev: any) =>
-                    prev.map((msg: any) =>
-                    msg.id === id ? { ...msg, isRead: !msg.isRead } : msg
-                )
-            );
-
-        // try {
-        //     if (!id) return;
-
-        //     // Backend API call
-        //     const unread =  await fetch(`${BASEURL}/api/notifications/${id}/read`, {
-        //         method: 'PUT',
-        //         headers: { 'Content-Type': 'application/json' },
-        //         // body: JSON.stringify({ id: id })
-        //     });
-
-        //     console.log("unread messages");
-        //     // Optimistically update UI
-        //     setUnreadmessagesData((prev: any) =>
-        //         prev.map((msg: any) =>
+        // setUnreadmessagesData((prev: any) =>
+        //             prev.map((msg: any) =>
         //             msg.id === id ? { ...msg, isRead: !msg.isRead } : msg
         //         )
         //     );
 
-        // } catch (err) {
-        //     console.error('Failed to mark notification as read:', err);
-        // }
+        try {
+            if (!id) return;
+
+            // Backend API call
+            const unread =  await fetch(`${BASEURL2}/api/notifications/${id}/read`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                // body: JSON.stringify({ id: id })
+            });
+
+            console.log("unread messages");
+            // Optimistically update UI
+            setUnreadmessagesData((prev: any) =>
+                prev.map((msg: any) =>
+                    msg.id === id ? { ...msg, isRead: !msg.isRead } : msg
+                )
+            );
+
+        } catch (err) {
+            console.error('Failed to mark notification as read:', err);
+        }
     };
     
     const fetchData = async () => {
         const fetchAllData = async () => {
             setLoading(true);
-
-            const customersPromise = await axiosInstance.get('/customers');
-            const plansPromise = await axiosInstance.get('/health_plans');
-            const customerHealthPlansPromise = await axiosInstance.get('/cust_health_plans');
+            console.log("Calling fetchAllData");
+            const customersPromise =  axiosInstance.get('/customers');
+            const plansPromise =  axiosInstance.get('/health_plans');
+            const customerHealthPlansPromise =  axiosInstance.get('/cust_health_plans');
 
             const results = await Promise.allSettled([
                 customersPromise,
                 plansPromise,
                 customerHealthPlansPromise,
             ]);
-
+            console.log("results", results);
             // Handle results
             results.forEach((result, index) => {
                 if (result.status === 'fulfilled') {

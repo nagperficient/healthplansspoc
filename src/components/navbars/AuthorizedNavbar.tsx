@@ -71,7 +71,7 @@ const AuthorizedNavbar = () => {
   const toggle = () => setIsOpen(!isOpen);
   const [showAlert, setShowAlert] = useState(true);
   useEffect(() => {
-     const socket = new WebSocket('ws://10.99.34.198:8083/ws/customer-events');
+     const socket = new WebSocket('ws://10.99.34.198:808/ws/customer-events');
     //  const socket = new WebSocket('ws://10.99.34.105:8080/ws/customer-events');
     socket.onopen = () => {
       console.log("socket established")
